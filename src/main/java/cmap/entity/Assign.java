@@ -32,7 +32,7 @@ public class Assign {
 	
 	@Transient
 	// --- Chuyển string thành date
-	private SimpleDateFormat date = new SimpleDateFormat("dd/M/yyyy");
+	private SimpleDateFormat date = new SimpleDateFormat("yyyy/mm/dd");
 
 	// --- Mapping
 	@OneToOne(fetch = FetchType.EAGER)

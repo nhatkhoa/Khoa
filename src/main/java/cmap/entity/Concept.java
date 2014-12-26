@@ -34,9 +34,16 @@ public class Concept{
 		this.name = name;
 		this.loc = loc;
 		this.cmap = cmap;
+		this.pass = -1;
 	}
 
+	@Override 
+	public boolean equals(Object obj){
+		Concept con = (Concept) obj;
+		// --- So sánh tên con concept
+		return this.getName().contains(con.getName());
 
+	}
 	public int getId() {
 		return id;
 	}

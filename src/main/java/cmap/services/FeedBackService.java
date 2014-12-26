@@ -1,7 +1,12 @@
 package cmap.services;
 
+import cmap.model.FeedBackVM;
+
+
 public interface FeedBackService {
 
-	public int compare(int cmap_id, int assign_id);
-
+	// --- Hàm lấy feedback theo id assign
+	public FeedBackVM findByAssign(int assign, String username);
+	
+	
 }

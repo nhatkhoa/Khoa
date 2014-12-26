@@ -17,16 +17,20 @@ public class Relation {
 	@GeneratedValue
 	private int id;
 	private String title;
+	// --- Dành cho chấm điểm : mặc định -1 là chưa chấm
+	private int pass;
 
-	// --- Mapping
+	// --- Concept đầu
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "from_concept")
 	private Concept from;
 
+	// --- Concept sau
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "to_concept")
 	private Concept to;
 
+	// --- CMap
 	@ManyToOne(fetch = FetchType.EAGER)
 	private CMap cmap;
 
@@ -34,37 +38,37 @@ public class Relation {
 	public Relation() {
 
 	}
-	
-
 
 	public Relation(Concept from, Concept to, String title, CMap cmap) {
 		this.title = title;
 		this.cmap = cmap;
 		this.from = from;
 		this.to = to;
+		this.pass = -1;
 	}
 
+	// --- Hàm so compare một cặp concept với nhau
+	public int isPass(Relation rela) {
+		// --- Lấy tên quan hệ bài làm
+		String title = rela.getTitle();
 
-	@Override
-	public boolean equals(Object obj) {
-		// --- Nếu obj là đối tượng Relation
-		if(obj.getClass().equals(this.getClass())){
-			// --- Cast đối tượng obj thành Relation
-			Relation temp = (Relation) obj;
-			// --- Nếu không trùng tiêu đề liên kết trả về false
-			if(!this.title.contains(temp.getTitle()))
-				return false;
-			// --- Kiểm tra tên concept đầu
-			if(this.from.getName().contains(temp.getFrom().getName()))
-				return false;
-			// --- Kiểm tra tên concept sau
-			if(this.to.getName().contains(temp.getTo().getName()))
-				return false;
+		// --- Nếu tên quan hệ giống nhau thì tiếp tục so sánh 2 concept
+		if (this.title.contains(title)) {
+			// --- Nếu cả 2 concept đều trùng thì trả về 1 (đúng hoàn toàn)
+			if (this.getFrom().equals(rela.getFrom())
+					&& this.getTo().equals(rela.getTo()))
+				return 3;
+			// --- Nếu không thì trả về 0 (sai hoàn toàn)
+			return 0;
 		}
-		return super.equals(obj);
+
+		// --- Nếu cả 2 concept đều trùng thì trả về 2 (Chỉ đúng 2 concept)
+		if (this.getFrom().equals(rela.getFrom())
+				&& this.getTo().equals(rela.getTo()))
+			return 2;
+		// --- Mặc định không trùng điều gì thì trả về 0
+		return 0;
 	}
-
-
 
 	public int getId() {
 		return id;
@@ -106,5 +110,12 @@ public class Relation {
 		this.cmap = cmap;
 	}
 
-	
+	public int getPass() {
+		return pass;
+	}
+
+	public void setPass(int pass) {
+		this.pass = pass;
+	}
+
 }

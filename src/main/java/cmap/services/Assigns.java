@@ -12,12 +12,16 @@ import cmap.entity.Assign;
 import cmap.entity.CMap;
 import cmap.entity.FeedBack;
 import cmap.entity.Member;
+import cmap.entity.Relation;
 import cmap.model.AssignPost;
 import cmap.model.AssignVM;
 import cmap.model.MemberVM;
 import cmap.repositories.AssignRepository;
 import cmap.repositories.CMapRepository;
+import cmap.repositories.ConceptRepository;
+import cmap.repositories.FeedBackRepository;
 import cmap.repositories.MemberRepository;
+import cmap.repositories.RelationRepository;
 
 @Service
 public class Assigns implements AssignService {
@@ -27,6 +31,15 @@ public class Assigns implements AssignService {
 
 	@Autowired
 	private CMapRepository cmaps;
+
+	@Autowired
+	private FeedBackRepository feeds;
+
+	@Autowired
+	private RelationRepository relations;
+
+	@Autowired
+	private ConceptRepository cons;
 
 	@Autowired
 	private AssignRepository assigns;
@@ -48,7 +61,7 @@ public class Assigns implements AssignService {
 
 	@Override
 	public Set<AssignVM> getList(String username) {
-		
+
 		// --- Tìm user trùng id
 		Member mem = mems.findByUsername(username);
 		// --- Nếu không tồn tại member nào
@@ -56,23 +69,22 @@ public class Assigns implements AssignService {
 			return null;
 		// --- Khởi tạo một list AssignVM rỗng
 		Set<AssignVM> list = new HashSet<AssignVM>(0);
-		
+
 		log.info("------------------ Lấy danh sách assign của " + username
-				+ " có tất cả : " + mem.getAssigns().size() + " assign --------------");
+				+ " có tất cả : " + mem.getAssigns().size()
+				+ " assign --------------");
 		// --- Tạo dữ liệu theo Giảng Viên hoặc sinh viên
 		if (mem.isTeacher()) {
 			// --- Duyệt danh sách bài tập của member trên
 			for (Assign a : assigns.findByAuthor(mem.getId())) {
-				
+
 				// --- Tạo một AssignVM mới tham chiếu Assign
 				AssignVM assign = new AssignVM(a.getId(), a.getTopic(),
 						a.getDeadline(), a.getInfo(), a.getCmap().getAuthor()
 								.getId(),
-						a.getCmap().getAuthor().getFullname(),
-						100,
-						new Date(), a
-								.getFeedbacks().size(), a.getCmap()
-								.getConcepts().size(), a.getMembers().size());
+						a.getCmap().getAuthor().getFullname(), 100, new Date(),
+						a.getFeedbacks().size(), a.getCmap().getConcepts()
+								.size(), a.getMembers().size());
 				// --- Thêm vào list
 				list.add(assign);
 			}
@@ -172,6 +184,111 @@ public class Assigns implements AssignService {
 		}
 
 		return list;
+	}
+
+	public int compare(int cmap_id, int assign_id) {
+		// --- Tìm cmap theo id
+		CMap cmap = cmaps.findById(cmap_id);
+
+		// --- Tìm assign theo id
+		Assign assign = assigns.findById(assign_id);
+
+		// --- Nếu 1 trong 2 cái không tồn tại thì hủy
+		if (cmap == null || assign == null)
+			return -1;
+
+		// --- Tạo mới một thực thể Feedback
+		FeedBack feed = new FeedBack(-1, new Date(), assign, cmap);
+
+		// --- Bắt đầu quá trình chấm bài
+
+		// --- Lây danh sách Relation của đáp án
+		Set<Relation> relationKey = assign.getCmap().getRelations();
+
+		// --- Lấy danh sách Realation của bài làm
+		Set<Relation> relationList = cmap.getRelations();
+
+		// --- Khai báo biến đếm điểm ban đầu bằng 0
+		int total = 0;
+
+		// --- Duyệt từng phần tử trong danh sách đáp án
+		for (Relation key : relationKey) {
+			// --- Duyệt qua danh sách bài làm
+			for (Relation relation : relationList) {
+				log.info("-- Compare relation " + relation.getTitle() + " với "
+						+ key.getTitle());
+
+				// --- Lấy điểm trả về từ so sánh
+				int score = relation.isPass(key);
+				
+				// --- Tăng tổng điểm lên
+				total += score;
+				
+				// --- Nếu đúng hoàn toàn
+				if (score == 3) {
+
+					
+					// --- Ghi history
+					log.info(relation.getTitle() + " Đúng hoàn toàn !");
+
+					// --- Gán pass của from concept đúng với id concept đáp án
+					relation.getFrom().setPass(key.getFrom().getId());
+					// --- Cập nhật concept
+					cons.save(relation.getFrom());
+
+					// --- Gán pass của to concept đúng với id concept đáp án
+					relation.getTo().setPass(key.getTo().getId());
+					// --- Cập nhật concept
+					cons.save(relation.getFrom());
+
+					// --- Gán pass của relation với id relation đáp án
+					relation.setPass(key.getId());
+					// --- Cập nhật vào cơ sở dữ liệu
+					relations.save(relation);
+
+					// --- Xóa relation đúng khỏi bài làm (Giảm số làn
+					relationList.remove(relation);
+				}
+				// --- Nếu chỉ 2 concept đúng còn quan hệ sai
+				if (score == 2) {
+					
+					// --- Ghi history
+					log.info(relation.getTitle() + " Đúng hoàn toàn !");
+
+					// --- Gán pass của from concept đúng với id concept đáp án
+					relation.getFrom().setPass(key.getFrom().getId());
+					// --- Cập nhật concept
+					cons.save(relation.getFrom());
+
+					// --- Gán pass của to concept đúng với id concept đáp án
+					relation.getTo().setPass(key.getTo().getId());
+					// --- Cập nhật concept
+					cons.save(relation.getFrom());
+
+					// --- Xóa relation đúng khỏi bài làm (Giảm số làn
+					relationList.remove(relation);
+				}
+			}
+		}
+
+	
+		// --- Lấy tổng số concept của cmap đáp án
+		int c = assign.getCmap().getConcepts().size();
+
+		// --- Lấy tổng số relation của cmap đáp án
+		int r = assign.getCmap().getRelations().size();
+				
+		// --- Tính điểm 
+		int score =(total == 0) ? 0 : (total / (c + r)) * 100;
+
+		log.info("-- Kết thúc chấm điểm, điểm tổng cộng là : " + score);
+		
+		feed.setScore(score);
+
+		feeds.save(feed);
+
+		return score;
+
 	}
 
 }

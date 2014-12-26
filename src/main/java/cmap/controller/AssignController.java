@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cmap.model.AssignPost;
 import cmap.model.AssignVM;
+import cmap.model.FeedBackVM;
 import cmap.model.MemberVM;
 import cmap.services.AssignService;
 import cmap.services.FeedBackService;
@@ -26,7 +27,7 @@ public class AssignController {
 	// --- Tự động liên kết assign service : Dependency injection
 	@Autowired
 	AssignService assigns;
-
+	
 	@Autowired
 	FeedBackService feeds;
 
@@ -37,17 +38,33 @@ public class AssignController {
 		return null;
 	}
 
-	// --- /data/assigns : Tạo bài tập mới
+	// --- /data/assigns : Action Tạo bài tập mới
 	@RequestMapping(method = RequestMethod.POST)
 	public AssignVM create(@RequestBody AssignPost assign) {
+		System.out.print(assign.getDeadline());
 		return assigns.add(assign);
 	}
 
-	// --- /data/assigns/submit : Nộp bài tập
+	// --- /data/assigns/submit : Action Nộp bài tập
+	// --- Vì quyền post trong controller này chỉ dành cho giáo viên nên ta sử dụng GET
 	@RequestMapping(value = "/submit/{id}/{cmap_id}", method = RequestMethod.GET)
 	public int submit(@PathVariable("id") int id,
 			@PathVariable("cmap_id") int cmap_id) {
-		return feeds.compare(cmap_id, id);
+		return assigns.compare(cmap_id, id);
+	}
+
+	// --- /data/assigns/2/feedback : Action Lấy feedback
+	@RequestMapping(value = "/{id}/feedback", method = RequestMethod.GET)
+	public ResponseEntity<FeedBackVM> feedback(@PathVariable("id") int id, Principal prin) {
+		
+		// --- Gọi dịch vụ trả về feedback, sử dụng username để xác nhận người dùng
+		FeedBackVM feed = feeds.findByAssign(id, prin.getName());
+		// --- Nếu không tồn tài feed thì báo not found
+		if(feed == null)
+			return new ResponseEntity<FeedBackVM>(HttpStatus.NOT_FOUND);
+		// --- Trả về với status Chấp Nhận yêu cầu
+		return new ResponseEntity<FeedBackVM>(feed, HttpStatus.ACCEPTED);
+		
 	}
 
 	// --- /data/assigns/1/members : Lấy danh sách thành viên chưa share bài tập
@@ -58,10 +75,11 @@ public class AssignController {
 	}
 
 	// --- /data/assigns/1/3 : Giao bài tập cho sinh viên
-	@RequestMapping(value ="/{id}/{mem_id}")
-	public ResponseEntity<String> postUser(@PathVariable("id") int id, @PathVariable("mem_id") int mem_id, Principal prin) {
+	@RequestMapping(value = "/{id}/{mem_id}")
+	public ResponseEntity<String> postUser(@PathVariable("id") int id,
+			@PathVariable("mem_id") int mem_id, Principal prin) {
 		// --- Gọi dịch vụ thực thi giao bài tập
-		if(assigns.postUser(id, mem_id, prin.getName()))
+		if (assigns.postUser(id, mem_id, prin.getName()))
 			// --- Nếu thành công thì trả về chấp nhận
 			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		// --- Nếu không thành công trả về not found

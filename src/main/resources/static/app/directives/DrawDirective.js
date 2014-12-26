@@ -3,7 +3,7 @@ var app = angular.module('ConceptMap');
 app.directive('draw', function() {
     return {
         restrict: 'E',
-        template: '<div></div>',
+        template: '<div class="draw"></div>',
         replace: true,
         scope: {
             model: '=data'

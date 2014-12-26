@@ -1,6 +1,11 @@
 <div class="col-md-9">
     <div class="notificationsWidget">
         <h4><span class="badge"></span> DANH SÁCH KHÁI NIỆM - {{$filter}}</h5>
+        <div ng-show="cmaps.length === 0" class="alert alert-info alert-dismissible fade in" role="alert">
+                                <div class="icon"><span class="fa fa-info-circle"></span></div>
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Đóng</span></button>
+                                <strong>Bạn chưa có Khái Niệm nào!</strong> Hãy nhấn vào nút "+" để bắt đầu tạo cho mình một Concept Map mới nhé!
+                            </div>
         <div ng-repeat="item in cmaps | filter : $filter | orderBy : 'id' : true" class="repeater notification">
             <div ng-class="{'time green' : $odd, 'time blue' : $even}">
                 <div ng-show="item.date_create !== underfined" class="timeBody hidden-xs">{{item.date_create | date : 'HH:mm dd/mm/yyyy '}}</div>
@@ -41,8 +46,8 @@
 </div>
 
 
-<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 ">
-    <h4> BẠN BÈ</h4>
+<div ng-show="cmaps.length !== 0" class="col-xs-12 col-sm-12 col-md-3 col-lg-3 ">
+    <h4>NGƯỜI CHIA SẼ</h4>
         <div class="list-group">
 
             <a ng-click="filter(item.author_name)" ng-repeat="item in cmaps | unique: 'author_id'" class="list-group-item">

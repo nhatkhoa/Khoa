@@ -1,13 +1,10 @@
 package cmap.controller;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.app.ApplicationInstanceInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import cmap.services.MemberService;
 
@@ -16,9 +13,7 @@ public class HomeController {
 
 	@Autowired
 	MemberService mems;
-	
-	@Autowired 
-	private DataSource dataSource;
+
 	
 	// --- Tạo user tạm thời
 	@RequestMapping(value = "/register", method = RequestMethod.POST)

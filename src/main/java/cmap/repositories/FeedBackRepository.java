@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import cmap.entity.FeedBack;
 @Repository
 public interface FeedBackRepository extends JpaRepository<FeedBack, Integer> {
-	// --- Hàm get người dùng bằng username
+	// --- Lấy feedback theo id
 	public FeedBack findById(int id);
+	
 }

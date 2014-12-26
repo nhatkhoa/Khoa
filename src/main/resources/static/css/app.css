@@ -1,11 +1,6 @@
-canvas{
+.draw{
   background: url("../images/draw.jpg") center;
 }
-
-canvas:hover{
-  background: white;
-}
-
 .share-item:hover{
     cursor : pointer;
     color : red;

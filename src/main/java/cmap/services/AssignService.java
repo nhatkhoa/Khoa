@@ -24,4 +24,7 @@ public interface AssignService {
 
 	// --- Giao assign cho user
 	public boolean postUser(int assign_id, int mem_id, String username);
+	
+	// --- Hàm chấm điểm bài tập submit
+	public int compare(int cmap_id, int assign_id);
 }
