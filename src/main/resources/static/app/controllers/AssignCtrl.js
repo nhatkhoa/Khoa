@@ -63,6 +63,25 @@
             }, function() {});
         };
 
+        
+        // --- Hiện bản vẽ FeedBack
+        $scope.$feedBack = function(id) {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/partials/feedback.html',
+                controller: 'FeedBackCtrl',
+                size: 'lg',
+                resolve: {
+                    // ---- id của cmap ( nếu id trống thì mặc định là -1)
+                    id: function() {
+                        if (id == undefined)
+                            return -1;
+                        return id;
+                    }
+                }
+            });
+
+            }, function() {});
+        };
 
     });
 

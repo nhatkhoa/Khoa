@@ -1,58 +1,14 @@
 <div class="modal-header">
-    <h1>Topic : {{feedback.topic}}</h1>
+ 
+ 	<h3>Tên bài tập : {{title}}</h3>
 </div>
-<div class="modal-body">
-    <tabset justified="true">
-        <tab heading="CHƯA CHIA SẼ">
-            <div class="commentsWidget">
-
-                <div ng-repeat="(id , item) in members | filter : $filter" class="comment">
-                    <div class="commentAvatar">
-                        <img class="avatar" ng-src="http://xiziu.com:8080/rest/avatar/{{id}}" alt="avatar">
-                        <div class="commentArrow"><span class="fa fa-caret-left"></span>
-                        </div>
-                    </div>
-                    <div ng-click="shareTo(id,$index)" class="commentContent share-item">
-                        <div class="commentName">{{item}}</div>
-                        <div class="commentBody">
-                            Mã thành viên : {{id}}
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-
-            </div>
-
-        
-        </tab>
-        <tab heading="ĐÃ CHIA SẼ">
-            <div class="commentsWidget">
-
-                <div ng-repeat="(id , item) in shareLists | filter : $filter" class="comment">
-                    <div class="commentAvatar">
-                        <img class="avatar" ng-src="http://xiziu.com:8080/rest/avatar/{{id}}" alt="avatar">
-                        <div class="commentArrow"><span class="fa fa-caret-left"></span>
-                        </div>
-                    </div>
-                    <div class="commentContent">
-                        <div class="commentName">{{item}}</div>
-                        <div class="commentBody">
-                            Mã thành viên : {{id}}
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-
-            </div>
-
-        
-        </tab>
-    </tabset>
+<div class="modal-body ">
+    <feedback data="model" style="border: solid 1px #ddd; width:100%; height:400px; backgound:white"></feedback>
 </div>
 <div class="modal-footer">
     <form class="form-inline" role="form">
-        <a class="btn btn-o btn-green" ng-click="ok()">Chia Sẽ</a>
-        <a class="btn btn-o btn-green" ng-click="cancel()">Hủy Bỏ</a>
+        <a class="btn btn-default btn-block">Điểm số của bạn : {{feed.score}}</a>
+        <a class="btn btn-o btn-green" ng-click="cancel()">Đóng FeedBack</a>
     </form>
 
 </div>

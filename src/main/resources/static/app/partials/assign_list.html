@@ -19,6 +19,8 @@
                     <a tooltip="Giao bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="teacher" ng-click="$postUser(item.id)" style="cursor : pointer" class="btn btn-icon btn-round btn-o btn-white btn-sm"><span class="fa fa-envelope-o"></span></a>
 
                     <a tooltip="Nộp bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="!teacher" ng-click="$submit(item.id)" style="cursor : pointer" class="btn btn-icon btn-round btn-o btn-white btn-sm"><span class="fa fa-rocket"></span></a>
+                    
+                    <a tooltip="Xem FeedBack" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="item.score > 0" ng-click="$feedBack(item.id)" style="cursor : pointer" class="btn btn-icon btn-round btn-o btn-white btn-sm"><span class="fa fa-rocket"></span></a>
 
                 </div>
                 <div class="name osLight">{{item.author_name}}</div>

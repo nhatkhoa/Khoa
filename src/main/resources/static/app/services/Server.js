@@ -112,13 +112,19 @@
 	var postUserHttp = function(id, mem_id) {
 	    return $http.get("data/assigns/"+ id + "/" + mem_id);
 	};
+	
+	// --- Lấy feedback
+	var feedHttp = function(id, mem_id) {
+	    return $http.get("data/assigns/"+ id + "/" + mem_id);
+	};
 
 	return {
 	    get : getHttp,
 	    submit : submitHttp,
 	    create : createHttp,
 	    members : getMemHttp,
-	    postUser : postUserHttp
+	    postUser : postUserHttp,
+	    feedBack : feedHttp
 	};
     });
 })();
