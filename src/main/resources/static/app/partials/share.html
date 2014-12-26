@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <input ng-model="$filter" class="form-control" type="text" placeholder="Nhập từ khóa tìm kiếm..." />
+</div>
+<div class="modal-body">
+    <tabset justified="true">
+        <tab heading="CHƯA CHIA SẼ">
+            <div class="commentsWidget">
+
+                <div ng-repeat="item in members | filter : $filter" class="comment">
+                    <div class="commentAvatar">
+                        <img class="avatar" ng-src="data/account/avatar/{{item.id}}" alt="avatar">
+                        <div class="commentArrow"><span class="fa fa-caret-left"></span>
+                        </div>
+                    </div>
+                    <div ng-click="share($index)" class="commentContent share-item">
+                        <div class="commentName">{{item.fullname}}</div>
+                        <div class="commentBody">
+                            <span class="label label-danger">[{{item.id}}]</span> - Tài Khoản :  {{item.username}}
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+        
+        </tab>
+        <tab heading="ĐÃ CHIA SẼ">
+            <div class="commentsWidget">
+
+                <div ng-repeat="item in shareLists | filter : $filter" class="comment">
+                    <div class="commentAvatar">
+                        <img class="avatar" ng-src="data/account/avatar/{{item.id}}" alt="avatar">
+                        <div class="commentArrow"><span class="fa fa-caret-left"></span>
+                        </div>
+                    </div>
+                    <div ng-click="unshare($index)" class="commentContent share-item">
+                        <div class="commentName">{{item.fullname}}</div>
+                        <div class="commentBody">
+                            <span class="label label-danger">[{{item.id}}]</span> - Tài Khoản :  {{item.username}}
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+        
+        </tab>
+    </tabset>
+</div>
+<div class="modal-footer">
+    <form class="form-inline" role="form">
+        <a class="btn btn-o btn-green" ng-click="ok()">Chia Sẽ</a>
+        <a class="btn btn-o btn-green" ng-click="cancel()">Đóng</a>
+    </form>
+
+</div>

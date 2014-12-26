@@ -1,0 +1,66 @@
+#loginBox{
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.9;
+  background: white;
+
+}
+
+#loginBox div{
+  margin: 200px auto;
+  clear: both;
+  width: 200px;
+}
+
+.view.ng-enter {
+  transition:1s linear all; 
+  position:relative;
+  left:100px;
+  opacity:0;
+}
+.view.ng-enter.ng-enter-active {
+  opacity:1;
+  left:0px;
+}
+
+.view.ng-leave {
+  transition:1s linear all; 
+  position:relative;
+  opacity:1;
+  left:0px;
+}
+.view.ng-leave.ng-leave-active {
+  opacity:0;
+  left:-100px;
+}
+
+.repeater.ng-enter {
+  animation:
+    repeater_enter 1s;
+}
+@keyframes repeater_enter {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+.repeater.ng-leave {
+  animation:
+    repeater_leave 1s;
+}
+@keyframes repeater_leave {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+.repeater.ng-move {
+  animation:
+    repeater_move 1s;
+}
+@keyframes repeater_move {
+  from { opacity:1; }
+  to { opacity:0; }
+}

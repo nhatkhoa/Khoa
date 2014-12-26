@@ -1,0 +1,28 @@
+<div class="modal-header bg-primary">
+    <h1 class="modal-title ">Giao Bài Tập</h1>
+</div>
+<div class="modal-header">
+    <input ng-model="$filter" class="form-control" type="text" placeholder="Nhập từ khóa tìm kiếm..." />
+</div>
+<div class="modal-body">
+    <div ng-repeat="item in members | filter : $filter" class="comment">
+        <div class="commentAvatar">
+            <img class="avatar" ng-src="data/account/avatar/{{item.id}}" alt="avatar">
+            <div class="commentArrow"><span class="fa fa-caret-left"></span>
+            </div>
+        </div>
+        <div ng-click="post(item)" class="commentContent share-item">
+            <div class="commentName">{{item.fullname}}</div>
+            <div class="commentBody">
+                <span class="label label-danger">[{{item.id}}]</span> - Tài Khoản : {{item.username}}
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="modal-footer">
+    <form class="form-inline" role="form">
+        <a class="btn btn-o btn-green" ng-click="cancel()">Đóng</a>
+    </form>
+
+</div>

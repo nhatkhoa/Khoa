@@ -1,0 +1,57 @@
+<div class="col-md-9">
+    <div class="notificationsWidget">
+        <h4><span class="badge"></span> DANH SÁCH KHÁI NIỆM - {{$filter}}</h5>
+        <div ng-repeat="item in cmaps | filter : $filter | orderBy : 'id' : true" class="repeater notification">
+            <div ng-class="{'time green' : $odd, 'time blue' : $even}">
+                <div ng-show="item.date_create !== underfined" class="timeBody hidden-xs">{{item.date_create | date : 'HH:mm dd/mm/yyyy '}}</div>
+                <div ng-show="item.date_create === underfined" class="timeBody hidden-xs">Mới được tạo</div>
+                <div class="timeArrow hidden-xs"><span class="fa fa-caret-right"></span>
+                </div>
+                <div class="indicator"><span class="fa fa-circle-o"></span>
+                </div>
+                <div class="notifyArrow"><span class="fa fa-caret-left"></span>
+                </div>
+            </div>
+            <div class="notifyContent">
+                <div class="notifyBody" id="properties">
+                    <img tooltip="[ {{item.author_id}} ] {{item.author_name}} " tooltip-trigger="mouseenter" tooltip-placement="top" class="avatar pull-left" ng-src="data/account/avatar/{{item.author_id}}" alt="avatar">
+                    <div class="info text-nowrap pull-left">
+                        <div class="name item-content"> 
+                            <span class="label label-green"> {{item.id}} </span>
+                            <span class="label label-red"> {{item.author_name || $account.fullname}} </span>
+                            <span  class="title">{{item.title}}</span>
+                            
+                        </div>
+                        <div class="item-info"><a> {{item.info}}</a></div>
+                    </div>
+                     <div class="ops item-button">
+                <a ng-show="item.author_id === $account.id && !$account.teacher" tooltip=" Chia sẽ " tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="$share(item.id)"  class="btn btn-icon btn-round btn-o btn-green btn-sm"><span class="fa fa-share-alt"></span></a>
+                <a ng-show="item.author_id === $account.id" tooltip="Xóa" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="$delete(item)" class="btn btn-icon btn-round btn-o btn-green btn-sm"><span class="fa icon-trash"></span></a>
+                <a tooltip="Xem" tooltip-trigger="mouseenter" tooltip-placement="top" ng-click="$draw(0,item.id)" class="btn btn-icon btn-round btn-o btn-green btn-sm"><span class="fa fa-eye"></span></a>
+
+            </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+           
+            <div class="clearfix"></div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 ">
+    <h4> BẠN BÈ</h4>
+        <div class="list-group">
+
+            <a ng-click="filter(item.author_name)" ng-repeat="item in cmaps | unique: 'author_id'" class="list-group-item">
+                <span class="fa fa-mail-forward text-green"></span> {{item.author_name}} <span class="fa fa-angle-right arrow"></span>
+            </a>
+
+            <a ng-show="$filter !== ''" ng-click="filter('')" class="list-group-item">
+                <span class="fa fa-mail-forward text-green"></span> Mặc định ban đầu <span class="fa fa-angle-right arrow"></span>
+            </a>
+
+        </div>
+    </div>

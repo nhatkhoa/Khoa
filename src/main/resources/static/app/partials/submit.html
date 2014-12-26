@@ -1,0 +1,21 @@
+<div class="modal-header bg-primary">
+    <h1 class="modal-title ">Nộp bài tập</h1>
+</div>
+<div class="modal-body">
+    <div ng-show="score !== undefined" class="form-group">
+        <h1>Bạn được : <strong>{{score}}</strong></h1>
+    </div>
+    <div class="form-group">
+        <h5>Chọn cmap cần nộp : </h5>
+        <select class="form-control" ng-model="cmap" ng-options="c.id as c.title for c in cmaps | filter :{author_id : author}">
+            <option></option>
+        </select>
+    </div>
+</div>
+<div class="modal-footer">
+    <form class="form-inline" role="form">
+        <a class="btn btn-o btn-green" ng-click="submit()">Nộp Bài</a>
+        <a class="btn btn-o btn-green" ng-click="cancel()">Đóng</a>
+    </form>
+
+</div>

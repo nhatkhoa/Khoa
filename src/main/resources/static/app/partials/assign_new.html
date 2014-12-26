@@ -1,0 +1,36 @@
+<div class="modal-header bg-primary">
+    <h1 class="modal-title ">Tạo Bài Tập Mới</h1>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <input ng-model="topic" type="text" class="form-control " id="topic" placeholder="Nhập tên topic của bài tập...">
+    </div>
+    <div class="form-group">
+        <input ng-model="info" type="text" class="form-control " id="topic" placeholder="Nhập nội dung chi tiết yêu cầu của bài tập này...">
+    </div>
+    <div class="form-group">
+        <p class="input-group ">
+            <input name="deadline" type="text" class="form-control " datepicker-popup="{{format}}" ng-model="deadline" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Đóng" />
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+        </p>
+    </div>
+    <div class="form-group">
+        <h5>Chọn cmap đáp án : </h5>
+        <select class="form-control" ng-model="cmap" ng-options="c.id as c.title for c in cmaps | filter :{author_id : author}">
+        <option>---- Chọn cmap đáp án ---</option>
+        </select>
+    </div>
+
+
+
+
+</div>
+<div class="modal-footer">
+    <form class="form-inline" role="form">
+        <a class="btn btn-o btn-green" ng-click="post()">Tạo Bài Tập Mới</a>
+        <a class="btn btn-o btn-green" ng-click="cancel()">Đóng Form</a>
+    </form>
+
+</div>

@@ -1,0 +1,42 @@
+<div class="container-fluid">
+
+    <div class="col-md-6 col-sm-12" ng-repeat="item in assigns">
+        <div class="userWidget-1">
+            <div class="avatar ">
+                <div ng-show="teacher" class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{item.submited}}" aria-valuemin="0" aria-valuemax="100" style="width:100%" data-toggle="tooltip" title="" data-original-title="{{item.submited}}">
+                    <h1 class="number text-red osLight">{{item.submited}} / {{item.users}} Sinh Viên</h1>
+                </div>
+                <div ng-show="!teacher && item.score !== -1" class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{item.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{item.score}}%">
+                    <h1 class="number text-red osLight">{{item.score}} / 100</h1>
+                </div>
+
+                <div ng-show="!teacher && item.score === -1" class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{item.score === -1 ? 0 :item.score}}" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <h1 class="number text-red osLight">Chưa nộp bài</h1>
+                </div>
+
+                <img tooltip="[ {{item.teacher_id}} ] {{item.teacher_name}} " tooltip-trigger="mouseenter" tooltip-placement="top" class="avatar pull-left" ng-src="data/account/avatar/{{item.teacher_id}}" alt="avatar">
+                <div class="ops">
+                    <a tooltip="Giao bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="teacher" ng-click="$postUser(item.id)" style="cursor : pointer" class="btn btn-icon btn-round btn-o btn-white btn-sm"><span class="fa fa-envelope-o"></span></a>
+
+                    <a tooltip="Nộp bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="!teacher" ng-click="$submit(item.id)" style="cursor : pointer" class="btn btn-icon btn-round btn-o btn-white btn-sm"><span class="fa fa-rocket"></span></a>
+
+                </div>
+                <div class="name osLight">{{item.author_name}}</div>
+            </div>
+            <div class="title">{{item.topic}}</div>
+            <div class="address">{{item.info}}</div>
+            <div class="rating">
+                <div class="number text-green osLight">{{item.deadline | date : "dd/mm/yyyy"}}</div>
+
+                <div class="clearfix"></div>
+            </div>
+            <ul class="stats">
+                <li><span>{{item.submited}}</span>Đã nộp</li>
+                <li><span>{{item.users}}</span>Số người nhận</li>
+                <li><span>{{item.total}}</span>Số khái niệm</li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+</div>

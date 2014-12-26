@@ -1,0 +1,71 @@
+package cmap.controller;
+
+import java.security.Principal;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import cmap.model.AssignPost;
+import cmap.model.AssignVM;
+import cmap.model.MemberVM;
+import cmap.services.AssignService;
+import cmap.services.FeedBackService;
+
+// --- Sử dụng giao thức RestFul service chỉ trả về body dưới dạng json
+@RestController
+// --- Url mặc định cho controller này xiziu.com/data/{action}
+@RequestMapping("/data/assigns")
+public class AssignController {
+	// --- Tự động liên kết assign service : Dependency injection
+	@Autowired
+	AssignService assigns;
+
+	@Autowired
+	FeedBackService feeds;
+
+	// --- /data/assigns/1 : Lấy bài tập theo id
+	@RequestMapping("/get/{id}")
+	public AssignVM get(@PathVariable("id") int id) {
+
+		return null;
+	}
+
+	// --- /data/assigns : Tạo bài tập mới
+	@RequestMapping(method = RequestMethod.POST)
+	public AssignVM create(@RequestBody AssignPost assign) {
+		return assigns.add(assign);
+	}
+
+	// --- /data/assigns/submit : Nộp bài tập
+	@RequestMapping(value = "/submit/{id}/{cmap_id}", method = RequestMethod.GET)
+	public int submit(@PathVariable("id") int id,
+			@PathVariable("cmap_id") int cmap_id) {
+		return feeds.compare(cmap_id, id);
+	}
+
+	// --- /data/assigns/1/members : Lấy danh sách thành viên chưa share bài tập
+	@RequestMapping("/{id}/members")
+	public Set<MemberVM> members(@PathVariable("id") int id) {
+		return assigns.getMembers(id);
+
+	}
+
+	// --- /data/assigns/1/3 : Giao bài tập cho sinh viên
+	@RequestMapping(value ="/{id}/{mem_id}")
+	public ResponseEntity<String> postUser(@PathVariable("id") int id, @PathVariable("mem_id") int mem_id, Principal prin) {
+		// --- Gọi dịch vụ thực thi giao bài tập
+		if(assigns.postUser(id, mem_id, prin.getName()))
+			// --- Nếu thành công thì trả về chấp nhận
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		// --- Nếu không thành công trả về not found
+		return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+
+	}
+}
