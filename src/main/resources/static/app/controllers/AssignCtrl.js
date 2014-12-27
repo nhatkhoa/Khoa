@@ -69,7 +69,7 @@
             var modalInstance = $modal.open({
                 templateUrl: 'app/partials/feedback.html',
                 controller: 'FeedBackCtrl',
-                size: 'lg',
+                windowClass: 'modal-draw',
                 resolve: {
                     // ---- id của cmap ( nếu id trống thì mặc định là -1)
                     id: function() {
@@ -78,7 +78,7 @@
                         return id;
                     }
                 }
-            });
+            
 
             }, function() {});
         };

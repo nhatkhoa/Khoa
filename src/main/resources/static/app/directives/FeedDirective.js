@@ -14,8 +14,11 @@ app.directive('feedback', function() {
             var myDiagram =
                 $(go.Diagram, element[0], {
                     initialContentAlignment: go.Spot.Center,
-                    "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom
-                   
+                    "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
+                    "clickCreatingTool.archetypeNodeData": {
+                        text: "Khái Niệm"
+                    },
+                    "undoManager.isEnabled": true
                 });
 
 
@@ -24,24 +27,21 @@ app.directive('feedback', function() {
                 $(go.Node, "Auto",
                     new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
                     // define the node's outer shape, which will surround the TextBlock
-                    $(go.Shape, "RoundedRectangle", {
+                    $(go.Shape, "RoundedRectangle",  {
                         parameter1: 20, // the corner has a large radius
-                        fill: $(go.Brush, go.Brush.Linear, {
-                            0: "rgb(254, 201, 0)",
-                            1: "rgb(254, 162, 0)"
-                        }),
-                        new go.Binding("stroke", "color").makeTwoWay(),
+                        fill: "white",
+                        
                         portId: "",
                         fromLinkable: true,
                         toLinkable: true,
 
                         cursor: "pointer"
-                    }),
+                    }, new go.Binding("stroke", "color")),
                     $(go.TextBlock, {
                             font: "bold 11pt helvetica, bold arial, sans-serif",
                             editable: true // editing the text automatically updates the model data
                         },
-                        new go.Binding("text", "text").makeTwoWay())
+                        new go.Binding("text", "text").makeTwoWay(), new go.Binding("stroke", "color"))
                 );
 
             
@@ -51,9 +51,8 @@ app.directive('feedback', function() {
 
                     $(go.Shape, {
                         isPanelMain: true,
-                        new go.Binding("stroke", "color").makeTwoWay(),
-                        strokeWidth: 2.5
-                    }),
+                        strokeWidth: 2
+                    }, new go.Binding("stroke", "color")),
                     $(go.Shape, {
                         toArrow: "standard",
                         stroke: null
@@ -78,7 +77,24 @@ app.directive('feedback', function() {
                     )
                 );
 
-          
+            function updateAngular(e) {
+                if (e.isTransactionFinished) scope.$apply();
+            }
+            scope.$watch("model", function(newmodel) {
+                var oldmodel = myDiagram.model;
+
+                if (oldmodel !== newmodel) {
+                    if (oldmodel) oldmodel.removeChangedListener(updateAngular);
+                    newmodel.addChangedListener(updateAngular);
+                    myDiagram.model = newmodel;
+                }
+            });
+            myDiagram.addDiagramListener("ChangedSelection", function(e) {
+                $model = JSON.parse(myDiagram.model.toJSON());
+                var selnode = myDiagram.selection.first();
+                myDiagram.model.selectedNodeData = (selnode instanceof go.Node ? selnode.data : null);
+                scope.$apply();
+            });
         }
     };
 });

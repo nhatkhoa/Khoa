@@ -1,6 +1,7 @@
 package cmap.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cmap.entity.Assign;
 import cmap.entity.Concept;
@@ -11,6 +12,7 @@ import cmap.model.FeedConceptVM;
 import cmap.model.FeedRelationVM;
 import cmap.repositories.AssignRepository;
 
+@Service
 public class FeedBacks implements FeedBackService {
 
 	@Autowired

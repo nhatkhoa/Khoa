@@ -1,3 +1,8 @@
+.modal-draw .modal-dialog {
+    width :95%;
+    min-width: 800px;
+}
+
 .draw{
   background: url("../images/draw.jpg") center;
 }

@@ -15,13 +15,14 @@
             $scope.title = response.title;
             $scope.info = response.info;
             $scope.score = response.score;
+            console.log(response);
         };
         var error = function(err) {
             toaster.pop("error", "Thất Bại", "Tải dữ liệu thất bại. Lỗi kết nối!");
             $modalInstance.dismiss('cancel');
         };
         // --- Gọi service ajax lấy feedback
-        cmapService.feedBack(id).success(success).error(error);
+        assignService.feedBack(id).success(success).error(error);
 
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');

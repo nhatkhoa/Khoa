@@ -114,8 +114,8 @@
 	};
 	
 	// --- Lấy feedback
-	var feedHttp = function(id, mem_id) {
-	    return $http.get("data/assigns/"+ id + "/" + mem_id);
+	var feedHttp = function(id) {
+	    return $http.get("data/assigns/"+ id + "/feedback");
 	};
 
 	return {

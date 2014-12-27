@@ -208,8 +208,6 @@ public class Assigns implements AssignService {
 		// --- Lấy danh sách Realation của bài làm
 		Set<Relation> relationList = cmap.getRelations();
 
-		// --- Khai báo biến đếm điểm ban đầu bằng 0
-		int total = 0;
 
 		// --- Duyệt từng phần tử trong danh sách đáp án
 		for (Relation key : relationKey) {
@@ -221,8 +219,6 @@ public class Assigns implements AssignService {
 				// --- Lấy điểm trả về từ so sánh
 				int score = relation.isPass(key);
 				
-				// --- Tăng tổng điểm lên
-				total += score;
 				
 				// --- Nếu đúng hoàn toàn
 				if (score == 3) {
@@ -233,61 +229,66 @@ public class Assigns implements AssignService {
 
 					// --- Gán pass của from concept đúng với id concept đáp án
 					relation.getFrom().setPass(key.getFrom().getId());
-					// --- Cập nhật concept
-					cons.save(relation.getFrom());
 
 					// --- Gán pass của to concept đúng với id concept đáp án
 					relation.getTo().setPass(key.getTo().getId());
-					// --- Cập nhật concept
-					cons.save(relation.getFrom());
 
 					// --- Gán pass của relation với id relation đáp án
 					relation.setPass(key.getId());
 					// --- Cập nhật vào cơ sở dữ liệu
 					relations.save(relation);
 
-					// --- Xóa relation đúng khỏi bài làm (Giảm số làn
-					relationList.remove(relation);
+					
 				}
 				// --- Nếu chỉ 2 concept đúng còn quan hệ sai
 				if (score == 2) {
 					
 					// --- Ghi history
-					log.info(relation.getTitle() + " Đúng hoàn toàn !");
+					log.info(relation.getTitle() + " chỉ đúng 2 concept !");
 
 					// --- Gán pass của from concept đúng với id concept đáp án
 					relation.getFrom().setPass(key.getFrom().getId());
-					// --- Cập nhật concept
-					cons.save(relation.getFrom());
 
 					// --- Gán pass của to concept đúng với id concept đáp án
 					relation.getTo().setPass(key.getTo().getId());
-					// --- Cập nhật concept
-					cons.save(relation.getFrom());
+					
+					// --- Cập nhật xuống cơ sở dữ liệu
+					relations.save(relation);
 
-					// --- Xóa relation đúng khỏi bài làm (Giảm số làn
-					relationList.remove(relation);
 				}
 			}
 		}
 
-	
-		// --- Lấy tổng số concept của cmap đáp án
-		int c = assign.getCmap().getConcepts().size();
-
-		// --- Lấy tổng số relation của cmap đáp án
-		int r = assign.getCmap().getRelations().size();
-				
-		// --- Tính điểm 
-		int score =(total == 0) ? 0 : (total / (c + r)) * 100;
-
-		log.info("-- Kết thúc chấm điểm, điểm tổng cộng là : " + score);
 		
-		feed.setScore(score);
 
+	
+		// --- Lấy tổng số concept và relation của cmap đáp án
+		int c = assign.getCmap().getConcepts().size() + assign.getCmap().getRelations().size();
+
+		
+		// --- Truy vấn lại cmap để lấy cập nhật sau việc chấm bài
+		 cmap = cmaps.findById(cmap_id);
+		 
+		// --- Lấy số concept và relation đúng 
+		 int pass = cmap.pass();
+		 
+		// --- Tính điểm : số concept + relation đúng / c + r, + 0.5 để làm tròn số chính xác
+		int sum = (int)((pass == 0) ? 0 : (float) pass / c * 100 + 0.5);
+		
+		log.info("-- Kết thúc chấm điểm, điểm tổng cộng là : " + sum + "|" + pass + "/" + c); 
+		
+		feed.setScore(sum);
+		
+		// --- Lấy feedback cũ với assign_id và id của member hiện tại
+		Set<FeedBack> temp = feeds.findFeed(assign_id, cmap.getAuthor().getId());
+
+		// --- xóa feedback cũ
+		feeds.delete(temp);
+		
+		// --- Lưu feedback mới
 		feeds.save(feed);
 
-		return score;
+		return sum;
 
 	}
 

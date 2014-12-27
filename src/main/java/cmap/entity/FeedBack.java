@@ -27,10 +27,10 @@ public class FeedBack {
 	private Date date_create;
 
 	// --- Mapping
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Assign assign;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private CMap cmap;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

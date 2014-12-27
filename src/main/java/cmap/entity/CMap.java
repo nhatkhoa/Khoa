@@ -42,7 +42,7 @@ public class CMap {
 	private Set<Relation> relations = new HashSet<Relation>(0);
 
 	// --- Danh sách các member được share 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shares")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "shares")
 	private Set<Member> members = new HashSet<Member>(0);
 	
 	// --- Danh sách feedback đối với cmap này
@@ -86,6 +86,22 @@ public class CMap {
 			}
 		}
 		return 0;
+	}
+	
+	// --- Hàm trả về số concept và relation đúng
+	public int pass(){
+		int count = 0;
+		// --- Đếm concept
+		for(Concept c : this.getConcepts()){
+			if(c.getPass() != -1)
+				count++;
+		}
+		// --- Đếm relation đúng
+		for(Relation r : this.getRelations()){
+			if(r.getPass() != -1)
+				count++;
+		}
+		return count;
 	}
 
 	public int getId() {
