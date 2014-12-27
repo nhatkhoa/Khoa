@@ -208,7 +208,6 @@ public class Assigns implements AssignService {
 		// --- Lấy danh sách Realation của bài làm
 		Set<Relation> relationList = cmap.getRelations();
 
-
 		// --- Duyệt từng phần tử trong danh sách đáp án
 		for (Relation key : relationKey) {
 			// --- Duyệt qua danh sách bài làm
@@ -218,12 +217,10 @@ public class Assigns implements AssignService {
 
 				// --- Lấy điểm trả về từ so sánh
 				int score = relation.isPass(key);
-				
-				
+
 				// --- Nếu đúng hoàn toàn
 				if (score == 3) {
 
-					
 					// --- Ghi history
 					log.info(relation.getTitle() + " Đúng hoàn toàn !");
 
@@ -238,11 +235,10 @@ public class Assigns implements AssignService {
 					// --- Cập nhật vào cơ sở dữ liệu
 					relations.save(relation);
 
-					
 				}
 				// --- Nếu chỉ 2 concept đúng còn quan hệ sai
 				if (score == 2) {
-					
+
 					// --- Ghi history
 					log.info(relation.getTitle() + " chỉ đúng 2 concept !");
 
@@ -251,7 +247,7 @@ public class Assigns implements AssignService {
 
 					// --- Gán pass của to concept đúng với id concept đáp án
 					relation.getTo().setPass(key.getTo().getId());
-					
+
 					// --- Cập nhật xuống cơ sở dữ liệu
 					relations.save(relation);
 
@@ -259,32 +255,26 @@ public class Assigns implements AssignService {
 			}
 		}
 
-		
-
-	
 		// --- Lấy tổng số concept và relation của cmap đáp án
-		int c = assign.getCmap().getConcepts().size() + assign.getCmap().getRelations().size();
+		int c = assign.getCmap().getConcepts().size()
+				+ assign.getCmap().getRelations().size();
 
-		
 		// --- Truy vấn lại cmap để lấy cập nhật sau việc chấm bài
-		 cmap = cmaps.findById(cmap_id);
-		 
-		// --- Lấy số concept và relation đúng 
-		 int pass = cmap.pass();
-		 
-		// --- Tính điểm : số concept + relation đúng / c + r, + 0.5 để làm tròn số chính xác
-		int sum = (int)((pass == 0) ? 0 : (float) pass / c * 100 + 0.5);
-		
-		log.info("-- Kết thúc chấm điểm, điểm tổng cộng là : " + sum + "|" + pass + "/" + c); 
-		
-		feed.setScore(sum);
-		
-		// --- Lấy feedback cũ với assign_id và id của member hiện tại
-		Set<FeedBack> temp = feeds.findFeed(assign_id, cmap.getAuthor().getId());
+		cmap = cmaps.findById(cmap_id);
 
-		// --- xóa feedback cũ
-		feeds.delete(temp);
-		
+		// --- Lấy số concept và relation đúng
+		int pass = cmap.pass();
+
+		// --- Tính điểm : số concept + relation đúng / c + r, + 0.5 để làm tròn
+		// số chính xác
+		int sum = (int) ((pass == 0) ? 0 : (float) pass / c * 100 + 0.5);
+
+		log.info("-- Kết thúc chấm điểm, điểm tổng cộng là : " + sum + "|"
+				+ pass + "/" + c);
+		// --- Gán điểm cho feedback mới
+		feed.setScore(sum);
+
+
 		// --- Lưu feedback mới
 		feeds.save(feed);
 

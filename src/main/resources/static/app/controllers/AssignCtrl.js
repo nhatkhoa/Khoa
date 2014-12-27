@@ -43,7 +43,7 @@
 
 
         // --- Hàm mở popup nộp bài tập
-        $scope.$submit = function(id) {
+        $scope.$submit = function(assign) {
            
             var modalInstance = $modal.open({
                 templateUrl: 'app/partials/submit.html',
@@ -51,15 +51,18 @@
                 size: 'sm',
                 resolve: {
                     id: function() {
-                        return id;
+                        return assign.id;
                     }
                 }
             });
             // ---- Kết quả trả về từ popup khi đóng
-            modalInstance.result.then(function(assign) {
-
-
-
+            modalInstance.result.then(function(score) {
+        	// --- Cập nhật điểm
+        	$scope.assigns[$scope.assigns.indexOf(assign)].score = score;
+        	
+        	console.log($scope.assigns[$scope.assigns.indexOf(assign)].score);
+        	// --- Cập nhật cache
+        	$localStorage.data.assigns = $scope.assigns;
             }, function() {});
         };
 

@@ -12,10 +12,10 @@
         var success = function(response) {
             // --- Thêm vào danh sách cmap offline
             $scope.model = new go.GraphLinksModel(response.nodeDataArray, response.linkDataArray);
-            $scope.title = response.title;
-            $scope.info = response.info;
-            $scope.score = response.score;
-            console.log(response);
+            $scope.feed = response;
+            // --- Hướng dẫn chú thích
+            toaster.pop("error", "MÀU ĐỎ", "Những khái niệm và quan hệ sai.");
+            toaster.pop("success", "MÀU XANH", "Những khái niệm và quan hệ đúng.");
         };
         var error = function(err) {
             toaster.pop("error", "Thất Bại", "Tải dữ liệu thất bại. Lỗi kết nối!");

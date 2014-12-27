@@ -3,24 +3,24 @@
     <div class="col-md-6 col-sm-12" ng-repeat="item in assigns">
         <div class="userWidget-1">
             <div class="avatar ">
-                <div ng-show="teacher" class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{item.submited}}" aria-valuemin="0" aria-valuemax="100" style="width:100%" data-toggle="tooltip" title="" data-original-title="{{item.submited}}">
-                    <h1 class="number text-red osLight">{{item.submited}} / {{item.users}} Sinh Viên</h1>
+                <div ng-show="teacher" class="progress-bar progress-bar-magenta" role="progressbar" aria-valuenow="{{item.submited}}" aria-valuemin="0" aria-valuemax="100" style="width:100%" data-toggle="tooltip" title="" data-original-title="{{item.submited}}">
+                    <h1 class="number text-yellow osLight">{{item.submited}} / {{item.users}} Sinh Viên</h1>
                 </div>
-                <div ng-show="!teacher && item.score !== -1" class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{item.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{item.score}}%">
-                    <h1 class="number text-red osLight">{{item.score}} / 100</h1>
+                <div ng-show="!teacher && item.score !== -1" class="progress-bar progress-bar-magenta" role="progressbar" aria-valuenow="{{item.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{item.score}}%">
+                    <h1 class="number text-yellow osLight">{{item.score}} / 100</h1>
                 </div>
 
-                <div ng-show="!teacher && item.score === -1" class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{item.score === -1 ? 0 :item.score}}" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                    <h1 class="number text-red osLight">Chưa nộp bài</h1>
+                <div ng-show="!teacher && item.score === -1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{item.score === -1 ? 0 :item.score}}" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <h3 style="padding: 50px; color : white;	">BẠN CHƯA NỘP BÀI TẬP NÀY</h3>
                 </div>
 
                 <img tooltip="[ {{item.teacher_id}} ] {{item.teacher_name}} " tooltip-trigger="mouseenter" tooltip-placement="top" class="avatar pull-left" ng-src="data/account/avatar/{{item.teacher_id}}" alt="avatar">
                 <div class="ops">
-                    <a tooltip="Giao bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="teacher" ng-click="$postUser(item.id)" style="cursor : pointer" class="btn btn-red "><span class="fa fa-envelope-o"></span>Giao bài</a>
+                    <a tooltip="Giao bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="teacher" ng-click="$postUser(item.id)" style="cursor : pointer" class="btn btn-primary"><span class="fa fa-envelope-o"></span> Giao bài</a>
 
-                    <a tooltip="Nộp bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="!teacher" ng-click="$submit(item.id)" style="cursor : pointer" class="btn btn-green "><span class="fa fa-rocket"></span> Nộp bài</a>
+                    <a tooltip="Nộp bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="!teacher" ng-click="$submit(item)" style="cursor : pointer" class="btn btn-primary"><span class="fa fa-rocket"></span> Nộp bài</a>
                     
-                    <a tooltip="Xem FeedBack" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="item.score > 0" ng-click="$feedBack(item.id)" style="cursor : pointer" class="btn btn-red "><span class="fa fa-puzzle-piece"></span> FeedBack</a>
+                    <a tooltip="Xem FeedBack" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="item.score > 0 && !teacher" ng-click="$feedBack(item.id)" style="cursor : pointer" class="btn btn-danger"><span class="fa fa-puzzle-piece"></span> FeedBack</a>
 
                 </div>
                 <div class="name osLight">{{item.author_name}}</div>

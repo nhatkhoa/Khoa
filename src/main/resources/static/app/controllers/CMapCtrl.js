@@ -96,7 +96,7 @@
                     $localStorage.data.cmaps = $scope.cmaps;
                 })
                 .error(function() {
-                    toaster.pop("error", "Thất Bại","Cmap " + item.title + " đang được chia sẽ !");
+                    toaster.pop("error", "Thất Bại","Cmap " + item.title + " đang được sử dụng !");
                 });
 
 

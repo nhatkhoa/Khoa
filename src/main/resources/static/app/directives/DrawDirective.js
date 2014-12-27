@@ -29,11 +29,8 @@ app.directive('draw', function() {
                     // define the node's outer shape, which will surround the TextBlock
                     $(go.Shape, "RoundedRectangle", {
                         parameter1: 20, // the corner has a large radius
-                        fill: $(go.Brush, go.Brush.Linear, {
-                            0: "rgb(254, 201, 0)",
-                            1: "rgb(254, 162, 0)"
-                        }),
-                        stroke: "black",
+                        fill:"#00CCD6",
+                        stroke: "#E2F2D5",
                         portId: "",
                         fromLinkable: true,
                         toLinkable: true,
@@ -42,7 +39,8 @@ app.directive('draw', function() {
                     }),
                     $(go.TextBlock, {
                             font: "bold 11pt helvetica, bold arial, sans-serif",
-                            editable: true // editing the text automatically updates the model data
+                            editable: true, // editing the text automatically updates the model data
+                            stroke : "white"
                         },
                         new go.Binding("text", "text").makeTwoWay())
                 );
@@ -54,7 +52,7 @@ app.directive('draw', function() {
 
                     $(go.Shape, {
                         isPanelMain: true,
-                        stroke: "#ddd",
+                        stroke: "#73AFB6",
                         strokeWidth: 1.5
                     }),
                     $(go.Shape, {

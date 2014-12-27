@@ -69,6 +69,8 @@ public class Relation {
 		// --- Mặc định không trùng điều gì thì trả về 0
 		return 0;
 	}
+	
+	
 
 	public int getId() {
 		return id;

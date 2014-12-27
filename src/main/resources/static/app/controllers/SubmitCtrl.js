@@ -14,21 +14,23 @@
         // --- Mặc định sẽ lấy cmap đầu tiên
         $scope.cmap = $scope.cmaps[0];
 
-
-        // --- Hàm đóng popup
-        $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
-        };
         //--- Hàm nợp bài tập
         $scope.submit = function() {
             // --- Gọi submit với id : assign id, cmap là id cmap được chọn
             assignService.submit(id, $scope.cmap).success(
                 function(response) {
+                    // --- Lấy điểm 
                     $scope.score = response;
+                    // --- Trả về điểm cho assignCtrl
+                    $modalInstance.close($scope.score);
+
                 }).error(function() {
                 toaster.pop("error", "Mất kết nối", "Vui lòng thử lại sau!");
+
             });
         }
+        
+
         
     });
 

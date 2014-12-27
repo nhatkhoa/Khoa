@@ -10,10 +10,6 @@
 	$scope.author = $localStorage.data.id;
 	$scope.cmap = $scope.cmaps[0];
 
-	$scope.today = function() {
-	    $scope.deadline = "Chọn hạn cuối nộp bài...";
-	};
-	$scope.today();
 	$scope.clear = function() {
 	    $scope.dt = null;
 	};

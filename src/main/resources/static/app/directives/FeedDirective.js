@@ -29,26 +29,25 @@ app.directive('feedback', function() {
                     // define the node's outer shape, which will surround the TextBlock
                     $(go.Shape, "RoundedRectangle",  {
                         parameter1: 20, // the corner has a large radius
-                        fill: "white",
                         
                         portId: "",
                         fromLinkable: true,
                         toLinkable: true,
 
                         cursor: "pointer"
-                    }, new go.Binding("stroke", "color")),
+                    }, new go.Binding("stroke", "color"), new go.Binding("fill", "color")),
                     $(go.TextBlock, {
                             font: "bold 11pt helvetica, bold arial, sans-serif",
-                            editable: true // editing the text automatically updates the model data
+                            editable: true, // editing the text automatically updates the model data
+                            stroke : "white"
                         },
-                        new go.Binding("text", "text").makeTwoWay(), new go.Binding("stroke", "color"))
+                        new go.Binding("text", "text").makeTwoWay())
                 );
 
             
 
             myDiagram.linkTemplate =
                 $(go.Link,
-
                     $(go.Shape, {
                         isPanelMain: true,
                         strokeWidth: 2

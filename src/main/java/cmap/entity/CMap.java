@@ -32,7 +32,8 @@ public class CMap {
 	private Member author;
 
 	// --- Fecth : Kiểu load - EAGER : Load đồng thời với CMAP
-	// --- cascade.ALL - orphanRemoval : Kiểu lan truyền, khi xóa cmap thì tự động xóa tất cả concept, relation,....
+	// --- cascade.ALL - orphanRemoval : Kiểu lan truyền, khi xóa cmap thì tự
+	// động xóa tất cả concept, relation,....
 	// --- Danh sách các concept chứa trong nó
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "cmap")
 	private Set<Concept> concepts = new HashSet<Concept>(0);
@@ -41,17 +42,18 @@ public class CMap {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "cmap")
 	private Set<Relation> relations = new HashSet<Relation>(0);
 
-	// --- Danh sách các member được share 
+	// --- Danh sách các member được share
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "shares")
 	private Set<Member> members = new HashSet<Member>(0);
-	
+
 	// --- Danh sách feedback đối với cmap này
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "cmap")
 	private Set<FeedBack> feedbacks = new HashSet<FeedBack>(0);
 
-	public CMap(){
-		
+	public CMap() {
+
 	}
+
 	public CMap(String title, String info, Member author) {
 		super();
 		this.title = title;
@@ -65,11 +67,11 @@ public class CMap {
 	// --- Trả về 1 : Chủ sở hữu
 	// --- Trả về 2 : Người được share
 	public int ownership(String username) {
-		if(this.author.getUsername().contains(username)){
+		if (this.author.getUsername().contains(username)) {
 			return 1;
 		}
-		for (Member m : members){
-			if(m.getUsername().contains(username)){
+		for (Member m : members) {
+			if (m.getUsername().contains(username)) {
 				return 2;
 			}
 		}
@@ -77,28 +79,39 @@ public class CMap {
 	}
 
 	public int ownership(int mem_id) {
-		if(this.author.getId() == mem_id){
+		if (this.author.getId() == mem_id) {
 			return 1;
 		}
-		for (Member m : members){
-			if(m.getId() == mem_id){
+		for (Member m : members) {
+			if (m.getId() == mem_id) {
 				return 2;
 			}
 		}
 		return 0;
 	}
-	
+
 	// --- Hàm trả về số concept và relation đúng
-	public int pass(){
+	public int pass() {
+		return this.relationPass() + this.conceptPass();
+	}
+
+	// --- Hàm trả về số concept và relation đúng
+	public int relationPass() {
 		int count = 0;
-		// --- Đếm concept
-		for(Concept c : this.getConcepts()){
-			if(c.getPass() != -1)
+		// --- Đếm relation đúng
+		for (Relation r : this.getRelations()) {
+			if (r.getPass() != -1)
 				count++;
 		}
-		// --- Đếm relation đúng
-		for(Relation r : this.getRelations()){
-			if(r.getPass() != -1)
+		return count;
+	}
+
+	// --- Hàm trả về số concept và relation đúng
+	public int conceptPass() {
+		int count = 0;
+		// --- Đếm concept
+		for (Concept c : this.getConcepts()) {
+			if (c.getPass() != -1)
 				count++;
 		}
 		return count;
