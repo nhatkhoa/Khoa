@@ -24,6 +24,9 @@ public class FeedBackVM implements Serializable {
 	private ArrayList<FeedConceptVM> nodeDataArray = new ArrayList<FeedConceptVM>(0);
 	private ArrayList<FeedRelationVM> linkDataArray = new ArrayList<FeedRelationVM>(0);
 	
+	// --- Danh sách tài liệu feedback về
+	private ArrayList<DocVM> docs = new ArrayList<DocVM>(0);
+	
 	
 	public FeedBackVM(int id, String topic, String info, int score,
 			int keyConcept, int keyRelation, int concept, int relation,
@@ -123,6 +126,14 @@ public class FeedBackVM implements Serializable {
 	}
 	public void setLinkDataArray(ArrayList<FeedRelationVM> linkDataArray) {
 		this.linkDataArray = linkDataArray;
+	}
+
+	public ArrayList<DocVM> getDocs() {
+		return docs;
+	}
+
+	public void setDocs(ArrayList<DocVM> docs) {
+		this.docs = docs;
 	}
 
 	

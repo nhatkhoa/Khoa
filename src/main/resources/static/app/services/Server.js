@@ -117,6 +117,16 @@
 	var feedHttp = function(id) {
 	    return $http.get("data/assigns/"+ id + "/feedback");
 	};
+	
+	// --- Lấy ListUpload Up tài liệu
+	var listUploadHttp = function(id) {
+	    return $http.get("data/assigns/"+ id + "/uploads");
+	};
+	
+	// --- Post url cho tài liệu
+	var postUrlHttp = function(id, url) {
+	    return $http.post("data/assigns/"+ id + "/posturl", url);
+	};
 
 	return {
 	    get : getHttp,
@@ -124,7 +134,9 @@
 	    create : createHttp,
 	    members : getMemHttp,
 	    postUser : postUserHttp,
-	    feedBack : feedHttp
+	    feedBack : feedHttp,
+	    listUpload : listUploadHttp,
+	    postUrl : postUrlHttp
 	};
     });
 })();

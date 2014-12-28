@@ -1,11 +1,15 @@
 package cmap.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,11 +24,15 @@ public class Concept{
 	private String loc;
 	private int	pass;
 	
-	// ---- Mapping
+	// --- Cmap cha, chứa concept này
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private CMap cmap;
 	
-	// ---- Constructor
+	// --- Chứa danh sách tài liệu hướng dẫn cho node concept
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Doc> docs = new HashSet<Doc>(0);
+	
+	// ---- Hàm khởi tạo
 	public Concept(){
 		
 	}
@@ -82,6 +90,16 @@ public class Concept{
 
 	public void setCmap(CMap cmap) {
 		this.cmap = cmap;
+	}
+
+
+	public Set<Doc> getDocs() {
+		return docs;
+	}
+
+
+	public void setDocs(Set<Doc> docs) {
+		this.docs = docs;
 	}
 
 	

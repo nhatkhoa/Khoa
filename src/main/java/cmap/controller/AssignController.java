@@ -1,7 +1,12 @@
 package cmap.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.security.Principal;
 import java.util.Set;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,11 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import cmap.model.AssignPost;
 import cmap.model.AssignVM;
+import cmap.model.DocVM;
 import cmap.model.FeedBackVM;
+import cmap.model.ListUpload;
 import cmap.model.MemberVM;
 import cmap.services.AssignService;
 import cmap.services.FeedBackService;
@@ -26,10 +35,13 @@ import cmap.services.FeedBackService;
 public class AssignController {
 	// --- Tự động liên kết assign service : Dependency injection
 	@Autowired
-	AssignService assigns;
-	
+	private AssignService assigns;
+
 	@Autowired
-	FeedBackService feeds;
+	private FeedBackService feeds;
+
+	@Autowired
+	private ServletContext servle;
 
 	// --- /data/assigns/1 : Lấy bài tập theo id
 	@RequestMapping("/get/{id}")
@@ -46,7 +58,8 @@ public class AssignController {
 	}
 
 	// --- /data/assigns/submit : Action Nộp bài tập
-	// --- Vì quyền post trong controller này chỉ dành cho giáo viên nên ta sử dụng GET
+	// --- Vì quyền post trong controller này chỉ dành cho giáo viên nên ta sử
+	// dụng GET
 	@RequestMapping(value = "/submit/{id}/{cmap_id}", method = RequestMethod.GET)
 	public int submit(@PathVariable("id") int id,
 			@PathVariable("cmap_id") int cmap_id) {
@@ -55,16 +68,18 @@ public class AssignController {
 
 	// --- /data/assigns/2/feedback : Action Lấy feedback
 	@RequestMapping(value = "/{id}/feedback", method = RequestMethod.GET)
-	public ResponseEntity<FeedBackVM> feedback(@PathVariable("id") int id, Principal prin) {
-		
-		// --- Gọi dịch vụ trả về feedback, sử dụng username để xác nhận người dùng
+	public ResponseEntity<FeedBackVM> feedback(@PathVariable("id") int id,
+			Principal prin) {
+
+		// --- Gọi dịch vụ trả về feedback, sử dụng username để xác nhận người
+		// dùng
 		FeedBackVM feed = feeds.findByAssign(id, prin.getName());
 		// --- Nếu không tồn tài feed thì báo not found
-		if(feed == null)
+		if (feed == null)
 			return new ResponseEntity<FeedBackVM>(HttpStatus.NOT_FOUND);
 		// --- Trả về với status Chấp Nhận yêu cầu
 		return new ResponseEntity<FeedBackVM>(feed, HttpStatus.ACCEPTED);
-		
+
 	}
 
 	// --- /data/assigns/1/members : Lấy danh sách thành viên chưa share bài tập
@@ -86,4 +101,54 @@ public class AssignController {
 		return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
 	}
+
+	// --- /data/assigns/1/uploads : Lấy danh sách upload cho assign
+	@RequestMapping(value = "/{id}/uploads")
+	public ResponseEntity<ListUpload> uploadList(@PathVariable("id") int id) {
+		// --- Gọi dịch vụ lấy ListUpload
+		return new ResponseEntity<ListUpload>(assigns.getUpload(id),
+				HttpStatus.OK);
+	}
+
+	// --- /data/assigns/1/uploads : Thêm link tài liệu
+	@RequestMapping(value = "/{id}/posturl", method = RequestMethod.POST)
+	public ResponseEntity<DocVM> postUrl(@PathVariable("id") int id, @RequestBody String url) {
+		
+		return new ResponseEntity<DocVM>(assigns.uploadDoc(id, url), HttpStatus.OK);
+	}
+	
+	// --- /data/assigns/1/upload : upload
+	@RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
+	public ResponseEntity<String> upload(@PathVariable("id") int concept_id,
+			@RequestParam("file") MultipartFile file) {
+
+		// --- Nếu tồn tại file được chọn
+		if (!file.isEmpty()) {
+			try {
+				// --- Lấy tên file /document/31313_kacaaca.pdf
+				String vir = "documents/" + concept_id + "_"
+						+ file.getOriginalFilename();
+				String name = servle.getRealPath("/") + "/" + vir;
+				// --- Đọc file upload lên
+				byte[] bytes = file.getBytes();
+				// --- Stream buffer file
+				BufferedOutputStream stream = new BufferedOutputStream(
+						new FileOutputStream(new File(name)));
+				// --- Ghi file
+				stream.write(bytes);
+				stream.close();
+
+				// --- Thêm url tại liệu mới vào concept
+				assigns.uploadDoc(concept_id, vir);
+				// --- Trả về đường dẫn file
+				return new ResponseEntity<String>(vir, HttpStatus.OK);
+			} catch (Exception e) {
+				return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+			}
+		} else {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
 }

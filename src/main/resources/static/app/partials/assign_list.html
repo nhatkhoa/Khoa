@@ -21,7 +21,9 @@
                     <a tooltip="Nộp bài tập" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="!teacher" ng-click="$submit(item)" style="cursor : pointer" class="btn btn-primary"><span class="fa fa-rocket"></span> Nộp bài</a>
                     
                     <a tooltip="Xem FeedBack" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="item.score > 0 && !teacher" ng-click="$feedBack(item.id)" style="cursor : pointer" class="btn btn-danger"><span class="fa fa-puzzle-piece"></span> FeedBack</a>
-
+					 
+					 <a tooltip="Upload Tài Liệu" tooltip-trigger="mouseenter" tooltip-placement="bottom" ng-show="teacher" ng-click="$upload(item.id)" style="cursor : pointer" class="btn btn-danger"><span class="fa fa-puzzle-piece"></span>Tài Liệu</a>
+					
                 </div>
                 <div class="name osLight">{{item.author_name}}</div>
             </div>

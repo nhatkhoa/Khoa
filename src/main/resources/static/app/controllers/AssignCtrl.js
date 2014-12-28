@@ -85,6 +85,25 @@
 
             }, function() {});
         };
+        
+     // --- Hiện popup upload tài liệu
+        $scope.$upload = function(id) {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/partials/upload.html',
+                controller: 'UploadCtrl',
+                size: 'lg',
+                resolve: {
+                    // ---- id của cmap ( nếu id trống thì mặc định là -1)
+                    id: function() {
+                        if (id == undefined)
+                            return -1;
+                        return id;
+                    }
+                }
+            
+
+            }, function() {});
+        };
 
     });
 

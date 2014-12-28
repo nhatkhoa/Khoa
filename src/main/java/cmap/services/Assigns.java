@@ -10,11 +10,16 @@ import org.springframework.stereotype.Service;
 
 import cmap.entity.Assign;
 import cmap.entity.CMap;
+import cmap.entity.Concept;
+import cmap.entity.Doc;
 import cmap.entity.FeedBack;
 import cmap.entity.Member;
 import cmap.entity.Relation;
 import cmap.model.AssignPost;
 import cmap.model.AssignVM;
+import cmap.model.ConceptDoc;
+import cmap.model.DocVM;
+import cmap.model.ListUpload;
 import cmap.model.MemberVM;
 import cmap.repositories.AssignRepository;
 import cmap.repositories.CMapRepository;
@@ -280,6 +285,55 @@ public class Assigns implements AssignService {
 
 		return sum;
 
+	}
+
+	@Override
+	public DocVM uploadDoc(int concept_id, String url) {
+		// --- Truy vấn concept có id trên
+		Concept con = cons.findById(concept_id);
+		// --- Khởi tạo một đối tượng Doc mới
+		Doc doc = new Doc(url);
+		// --- Thêm tài liệu vào concept
+		con.getDocs().add(doc);
+		// --- Cập nhật cơ sở dữ liệu
+		cons.save(con);
+		
+		DocVM temp = new DocVM(doc.getId(), doc.getUrl());
+		// --- Trả về 
+		return temp;
+	}
+
+	@Override
+	public ListUpload getUpload(int assign_id) {
+		
+		// --- Truy vấn assign tương ứng với id
+		Assign assign = assigns.findById(assign_id);
+		
+		// --- Nếu không tồn tại 
+		if(assign == null)
+			return null;
+		
+		// --- Khởi tạo mới một đối tượng ListUpload
+		ListUpload listUpload = new ListUpload(assign_id, assign.getTopic());
+		
+		// --- Lấy danh sách các concept
+		Set<Concept> concepts = assign.getCmap().getConcepts();
+		
+		// --- Duyệt từng concepts : tạo mới đối tượng ConceptDoc
+		for(Concept c : concepts){
+			ConceptDoc con = new ConceptDoc(c.getId(), c.getName(), c.getDocs().size());
+			
+			// --- Duyệt từng Doc trong danh sách tài liệu của concept đang duyệt
+			for(Doc d : c.getDocs()){
+				// --- Tạo và thêm DocVM mới tạo con
+				con.getDocs().add(new DocVM(d.getId(), d.getUrl()));
+			}
+			
+			// --- Thêm con vào listUplod
+			listUpload.getConcept().add(con);
+		}
+		
+		return listUpload;
 	}
 
 }

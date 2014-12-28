@@ -2,50 +2,80 @@
 	<feedback data="model"
 		style="border: solid 1px #ddd; width:100%; height:350px; backgound:white"></feedback>
 	</br>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			Bài tập : {{feed.topic}} <small> << {{feed.info}} >> (Màu xanh : Đúng | Màu đỏ : Sai)</small>
+
+	<div class="row container-fluid">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Bài tập : {{feed.topic}} <small> << {{feed.info}} >> (Màu
+						xanh : Đúng | Màu đỏ : Sai)</small>
+				</div>
+				<div class="panel-body container-fluid">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="alert alert-info alert-dismissible fade in"
+							role="alert">
+							<div class="icon">
+								<span class="fa fa-info-circle"></span>
+							</div>
+							<strong>Khái niệm đúng : </strong> {{feed.concept}} /
+							{{feed.keyConcept}}
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="alert alert-info alert-dismissible fade in"
+							role="alert">
+							<div class="icon">
+								<span class="fa fa-info-circle"></span>
+							</div>
+							<strong>Quan hệ đúng : </strong> {{feed.relation}} /
+							{{feed.keyRelation}}
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="alert alert-danger alert-dismissible fade in"
+							role="alert">
+							<div class="icon">
+								<span class="fa fa-info-circle"></span>
+							</div>
+							<strong>Tổng điểm của bạn : </strong> {{feed.score}} / 100
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="alert alert-info alert-dismissible fade in"
+							role="alert">
+							<div class="icon">
+								<span class="fa fa-info-circle"></span>
+							</div>
+							<strong>Ngày nộp : </strong> {{feed.date_submit}}
+						</div>
+					</div>
+				</div>
+
+			</div>
 		</div>
-		<div class="panel-body container-fluid">
-			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-				<div class="alert alert-info alert-dismissible fade in" role="alert">
-					<div class="icon">
-						<span class="fa fa-info-circle"></span>
-					</div>
-					<strong>Khái niệm đúng : </strong> {{feed.concept}} / {{feed.keyConcept}}
-				</div>
-			</div>
 
-			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-				<div class="alert alert-info alert-dismissible fade in" role="alert">
-					<div class="icon">
-						<span class="fa fa-info-circle"></span>
-					</div>
-					<strong>Quan hệ đúng : </strong> {{feed.relation}} / {{feed.keyRelation}}
+		<div class="col-md-6">
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<strong>Tài liệu tham khảo :</strong>
 				</div>
-			</div>
+				<div class="panel-body">
 
-			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-				<div class="alert alert-danger alert-dismissible fade in" role="alert">
-					<div class="icon">
-						<span class="fa fa-info-circle"></span>
-					</div>
-					<strong>Tổng điểm của bạn : </strong> {{feed.score}} / 100
-				</div>
-			</div>
+					<div class="list-group">
+						<a href="{{item.url}}" ng-repeat="item in feed.docs"
+							class="list-group-item"><strong>Link {{$index + 1}}
+								: </strong> {{item.url}}<span class="fa fa-angle-right arrow"></span> </a>
 
-			<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-				<div class="alert alert-info alert-dismissible fade in" role="alert">
-					<div class="icon">
-						<span class="fa fa-info-circle"></span>
 					</div>
-					<strong>Ngày nộp : </strong> {{feed.date_submit}}
 				</div>
+
 			</div>
 
 		</div>
 	</div>
-
 </div>
 <div class="modal-footer">
 

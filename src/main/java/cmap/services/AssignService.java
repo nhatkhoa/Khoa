@@ -4,9 +4,16 @@ import java.util.Set;
 
 import cmap.model.AssignPost;
 import cmap.model.AssignVM;
+import cmap.model.DocVM;
+import cmap.model.ListUpload;
 import cmap.model.MemberVM;
 
 public interface AssignService {
+	// --- Load list upload tài liệu
+	public ListUpload getUpload(int assign_id);
+	
+	public DocVM uploadDoc(int concept_id, String url);
+	
 	// --- Lấy Assign theo id
 	public AssignVM findById(int id);
 

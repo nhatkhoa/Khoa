@@ -5,9 +5,12 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cmap.entity.Assign;
 import cmap.entity.Concept;
+import cmap.entity.Doc;
 import cmap.entity.FeedBack;
 import cmap.entity.Relation;
+import cmap.model.DocVM;
 import cmap.model.FeedBackVM;
 import cmap.model.FeedConceptVM;
 import cmap.model.FeedRelationVM;
@@ -50,6 +53,7 @@ public class FeedBacks implements FeedBackService {
 			
 			// --- Thêm đối tượng vào list
 			feed.getNodeDataArray().add(con);
+			
 		}
 		
 		
@@ -61,6 +65,22 @@ public class FeedBacks implements FeedBackService {
 			
 			// --- Thêm đối tượng vào list
 			feed.getLinkDataArray().add(rela);
+		}
+		
+		// --- Lấy tài liệu feedback trả về
+		
+		// --- Truy vấn assign có id trên
+		Assign assign = assigns.findById(assign_id);
+		
+		// --- Duyệt qua tất cả các concept trong đáp án assign
+		for(Concept c : assign.getCmap().getConcepts()){
+			// --- Kiểm tra trong cmap bài làm có concept đúng không
+			if(!f.getCmap().check(c.getId())){
+				// --- Nếu không tồn tại thì thêm tài liệu feedback
+				for(Doc d : c.getDocs()){
+					feed.getDocs().add(new DocVM(d.getId(), d.getUrl()));
+				}
+			}
 		}
 		
 		return feed;

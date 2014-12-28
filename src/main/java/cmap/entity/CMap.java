@@ -116,6 +116,18 @@ public class CMap {
 		}
 		return count;
 	}
+	
+	// --- Hàm kiểm tra để lấy feedback
+	public boolean check(int id){
+		// --- Duyệt tất cả các concept
+		for(Concept c : this.getConcepts()){
+			
+			// --- pass = id : concept này đúng
+			if(c.getPass() == id)
+				return true;
+		}
+		return false;
+	}
 
 	public int getId() {
 		return id;
