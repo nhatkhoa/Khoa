@@ -38,7 +38,7 @@
 	    temp.cmap_id = $scope.cmap;
 	    temp.topic = $scope.topic;
 	    temp.info = $scope.info;
-	    temp.deadline = $scope.deadline;
+	    temp.deadline = $scope.deadline.getDate() + "/" + $scope.deadline.getMonth() + "/" + $scope.deadline.getFullYear() ;
 
 	    console.log(temp);
 	    assignService.create(temp).success(

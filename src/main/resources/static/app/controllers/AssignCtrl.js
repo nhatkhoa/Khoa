@@ -15,29 +15,38 @@
 
         $scope.teacher = $localStorage.data.teacher;
 
-
+        $scope.student = function(a, b){
+            if(a===0)
+        	return 0;
+            return a/b*100;
+        }
+        
         // --- Hàm mở popup tạo bài tập mới
-        $scope.$postUser = function(id) {
+        $scope.$postUser = function(item) {
             // --- Kiểm tra giảng viên
             if (!$localStorage.data.teacher) {
                 toaster.pop("error", "Cảnh báo", "Bạn không có quyền truy cập!");
                 return;
             };
+            
+            // --- Lấy index của assign
+            var index = $scope.assigns.indexOf(item);
             var modalInstance = $modal.open({
                 templateUrl: 'app/partials/postUser.html',
                 controller: 'PostUserCtrl',
                 size: 'sm',
                 resolve: {
                     id: function() {
-                        return id;
+                        return item.id;
                     }
                 }
             });
             // ---- Kết quả trả về từ popup khi đóng
-            modalInstance.result.then(function(assign) {
-
-
-
+            modalInstance.result.then(function(count) {
+        	// --- Cập nhật lại assign
+        	item.users = item.users + count;
+        	 $scope.assigns[index] = item;
+        	$localStorage.data.assigns = $scope.assigns;
             }, function() {});
         };
 

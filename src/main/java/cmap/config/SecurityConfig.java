@@ -25,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// --- Bỏ qua đăng nhập đối với trang welcome
 		http
+			.headers().cacheControl().frameOptions().disable()
 			.csrf().disable() // --- Tắt chức năng bảo vệ qua cross site
 			.authorizeRequests()
 			.antMatchers("/welcome.html","/login.html",

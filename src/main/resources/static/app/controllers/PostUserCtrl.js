@@ -15,6 +15,8 @@
             $modalInstance.close();
         });
 
+        // --- Biến đếm số người
+        var count = 0;
         // --- Gọi để gán bài tập cho member
         // --- Thực hiện lênh ajax lên server, nếu thành công thì xóa member khỏi danh sách
         $scope.post = function(item) {
@@ -25,7 +27,7 @@
                         "Đã gán bài tập cho " + item.id);
                     // --- xóa member khỏi list
                     $scope.members.splice($scope.members.indexOf(item), 1);
-
+                    count = count + 1;
                 }).error(function(err) {
                 toaster.pop("error", "Lỗi kết nối", err);
             });
@@ -35,7 +37,7 @@
 
         $scope.cancel = function() {
         	// --- Đóng popup
-            $modalInstance.close();
+            $modalInstance.close(count);
         };
 
     };

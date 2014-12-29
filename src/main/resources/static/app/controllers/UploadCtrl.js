@@ -56,7 +56,6 @@
 	
 	$scope.upload = function(){
 	    
-	    $("#upload").ajaxSubmit();
 	    // --- Lấy index concept đang select
 	    var index = $scope.data.concept.indexOf($scope.select);
 	    // --- Lấy id concept đang chọn

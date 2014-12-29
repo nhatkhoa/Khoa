@@ -4,6 +4,9 @@
     top : -50px;
 }
 
+.flow{
+	overflow : hidden;
+}
 
 
 .draw{

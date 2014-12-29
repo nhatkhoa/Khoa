@@ -5,6 +5,8 @@
 
     app.controller('DrawCtrl', function($scope, $modalInstance, $http, $localStorage, toaster, cmapService, mode, id) {
 
+	toaster.pop("info", "Hướng Dẫn", "Double click để tạo mới");
+	toaster.pop("warring", "Hướng Dẫn", "Kéo thả để tạo liên kết");
         // ------------------- Thông tin cmap---------------------------------/
         $scope.title = "";
         $scope.info = "";
@@ -13,8 +15,8 @@
         $scope.author_id = -1;
 
         //------------------- Thông tin về bản vẽ------------------------------/
-        //-- Dữ liệu bản vẽ
         $scope.model = new go.GraphLinksModel();
+        
 
         // --- Nếu là chế độ xem và update
         if ($scope.mode == 0) {
@@ -73,6 +75,8 @@
                 .success(function(response) {
                     toaster.pop("success", "Thành Công", "Tạo Concepts Map thành công!");
                     $modalInstance.close(response);
+                    
+                    $localStorage.temp = {};
                 })
                 .error(function() {
                     toaster.pop("error", "Mất kết nối", "Không thể tạo concept map này !");
@@ -121,8 +125,7 @@
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
         };
-
-
+      
     });
 
 })();
