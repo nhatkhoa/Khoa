@@ -132,11 +132,7 @@
 	var uploadHttp = function(id, file) {
 	    var fd = new FormData();
 	    fd.append('file', file);
-	    
-	    return $http.post("docs/" + id, fd, {
-	            transformRequest: angular.identity,
-	            headers: {"Content-Type: 'multipart/form-data; boundary=data'"}
-	        });
+	    return $http.post("docs/" + id, fd);
 	};
 
 	// --- Post url cho tài liệu
