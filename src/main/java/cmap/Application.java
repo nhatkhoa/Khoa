@@ -15,7 +15,7 @@ public class Application {
     	// --- Cấu hình chạy trên heroku
     	String webPort = System.getenv("PORT");
 		if (webPort == null || webPort.isEmpty()) {
-			webPort = "80";
+			webPort = "1234";
 		}
 		System.setProperty("server.port", webPort);
 		

@@ -136,6 +136,8 @@
 	    return $http.post("docs/" + id, fd, {
 	            transformRequest: angular.identity,
 	            headers: {'Content-Type': "multipart/form-data; boundary='data'"}
+	        },params: {
+	            
 	        });
 	};
 

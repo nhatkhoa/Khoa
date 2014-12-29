@@ -29,12 +29,12 @@
 						</span>
 					</div>
 					</br>
-					<div class="input-group">
-						<input type="file" ng-model="file" class="form-control" 
+					<form id="upload" action="docs/{{select.id}}" method="post" enctype="multipart/form-data" class="input-group">
+						<input name="file" type="file" ng-model="file" class="form-control" 
 							> <span class="input-group-btn">
 							<a ng-click="upload()" class="btn btn-red">Tải lên</a>
 						</span>
-					</div>
+					</form>
 					
 				</div>
 			</div>
