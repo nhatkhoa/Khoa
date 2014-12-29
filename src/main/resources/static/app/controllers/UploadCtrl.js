@@ -30,26 +30,76 @@
 	    $scope.select = concept;
 	}
 	
-	$scope.add = function(item){
-	    if($scope.link === ""){
+	$scope.add = function(){
+	    if($scope.link.trim() === ''){
 		toaster.pop("error", "Chú ý", "Cần nhập link đường dẫn trước!");
 		return;
 	    }
+	    // --- Lấy index concept đang select
+	    var index = $scope.data.concept.indexOf($scope.select);
 	    // --- Lấy id concept đang chọn
 	    var id = $scope.select.id;
 	    // --- Gọi service post đường dẫn
 	    assignService.postUrl(id, $scope.link)
 	    .success(function(response){
 		// --- Thông báo
-		toaster.pop("success", "Thành công", "Đã thêm : " + $scope.link);
+		toaster.pop("success", "Đã thêm thành công", $scope.link);
 		// --- Thêm vào danh sách docs của concept hiện tại
 		$scope.select.docs.push(response);
-		$scope.data.concept[$scope.data.concept.indexOf(item)] = $scope.select.docs.push(response);
+		$scope.data.concept[index] = $scope.select;
+		console.log($scope.data.concept[index]);
 		// --- Làm trống đường link
 		 $scope.link = "";
 	    })
 	    
 	}
+	
+	$scope.upload = function(){
+	    // --- Lấy index concept đang select
+	    var index = $scope.data.concept.indexOf($scope.select);
+	    // --- Lấy id concept đang chọn
+	    var id = $scope.select.id;
+	    // --- Gọi service post đường dẫn
+	    assignService.upload(id, $scope.file)
+	    .success(function(response){
+		// --- Thông báo
+		toaster.pop("success", "Đã thêm thành công", $scope.link);
+		// --- Thêm vào danh sách docs của concept hiện tại
+		$scope.select.docs.push(response);
+		$scope.data.concept[index] = $scope.select;
+		console.log($scope.data.concept[index]);
+		// --- Làm trống đường link
+		 $scope.link = "";
+	    })
+	    
+	}
+	
+	$scope.del = function(item){
+	    // --- Lấy index concept đang select
+	    var index = $scope.data.concept.indexOf($scope.select);
+	    
+	    // --- Lấy index url nhấn 
+	    var indexUrl = $scope.select.docs.indexOf(item);
+	    
+	    // --- Gọi service xóa
+	    assignService.delUrl(item.id)
+	    .success(function(){
+		// --- Thông báo
+		toaster.pop("success", "Xóa thành cồng", item.url);
+		// --- Xóa khỏi danh sách hiện tại
+		$scope.select.docs.splice(indexUrl,1);
+		// --- Cập nhật vào data chính
+		$scope.data.concept[index] = $scope.select;
+		
+		console.log($scope.data.concept[index]);
+	    })
+	    .error(function(){
+		toaster.pop("error", "Mất kết nối", "Vui lòng thử lại sau!");
+	    })
+	    
+	}
+	
+	
     });
 
 })();

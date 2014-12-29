@@ -1,7 +1,7 @@
 $show = {};
 (function() {
     "use strict";
-    var app = angular.module('ConceptMap', ["ui.router", "ui.bootstrap", "ngStorage", "toaster", 'angular.filter', 'chieffancypants.loadingBar']);
+    var app = angular.module('ConceptMap', ["angularFileUpload", "ui.router", "ui.bootstrap", "ngStorage", "toaster", 'angular.filter', 'chieffancypants.loadingBar']);
     // --- Configuration
     app.config(function($stateProvider, $urlRouterProvider, cfpLoadingBarProvider) {
 

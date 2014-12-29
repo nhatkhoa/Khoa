@@ -24,6 +24,7 @@ import cmap.model.MemberVM;
 import cmap.repositories.AssignRepository;
 import cmap.repositories.CMapRepository;
 import cmap.repositories.ConceptRepository;
+import cmap.repositories.DocRepository;
 import cmap.repositories.FeedBackRepository;
 import cmap.repositories.MemberRepository;
 import cmap.repositories.RelationRepository;
@@ -48,6 +49,9 @@ public class Assigns implements AssignService {
 
 	@Autowired
 	private AssignRepository assigns;
+	
+	@Autowired
+	private DocRepository docs;
 
 	private Logger log = Logger.getLogger(this.getClass());
 
@@ -293,10 +297,9 @@ public class Assigns implements AssignService {
 		Concept con = cons.findById(concept_id);
 		// --- Khởi tạo một đối tượng Doc mới
 		Doc doc = new Doc(url);
-		// --- Thêm tài liệu vào concept
-		con.getDocs().add(doc);
-		// --- Cập nhật cơ sở dữ liệu
-		cons.save(con);
+		doc.setConcept(con);
+		
+		docs.save(doc);
 		
 		DocVM temp = new DocVM(doc.getId(), doc.getUrl());
 		// --- Trả về 
@@ -334,6 +337,23 @@ public class Assigns implements AssignService {
 		}
 		
 		return listUpload;
+	}
+
+	@Override
+	public boolean deleteDoc(int id) {
+		try{
+			Doc doc = docs.findById(id);
+			Concept con = doc.getConcept();
+			
+			con.getDocs().remove(doc);
+			cons.save(con);
+
+			return true;
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

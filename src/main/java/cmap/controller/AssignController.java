@@ -1,8 +1,5 @@
 package cmap.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.security.Principal;
 import java.util.Set;
 
@@ -15,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import cmap.model.AssignPost;
 import cmap.model.AssignVM;
@@ -117,38 +112,13 @@ public class AssignController {
 		return new ResponseEntity<DocVM>(assigns.uploadDoc(id, url), HttpStatus.OK);
 	}
 	
-	// --- /data/assigns/1/upload : upload
-	@RequestMapping(value = "/{id}/upload", method = RequestMethod.POST)
-	public ResponseEntity<String> upload(@PathVariable("id") int concept_id,
-			@RequestParam("file") MultipartFile file) {
-
-		// --- Nếu tồn tại file được chọn
-		if (!file.isEmpty()) {
-			try {
-				// --- Lấy tên file /document/31313_kacaaca.pdf
-				String vir = "documents/" + concept_id + "_"
-						+ file.getOriginalFilename();
-				String name = servle.getRealPath("/") + "/" + vir;
-				// --- Đọc file upload lên
-				byte[] bytes = file.getBytes();
-				// --- Stream buffer file
-				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(new File(name)));
-				// --- Ghi file
-				stream.write(bytes);
-				stream.close();
-
-				// --- Thêm url tại liệu mới vào concept
-				assigns.uploadDoc(concept_id, vir);
-				// --- Trả về đường dẫn file
-				return new ResponseEntity<String>(vir, HttpStatus.OK);
-			} catch (Exception e) {
-				return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
-			}
-		} else {
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		
+	// --- /data/assigns/docs/3/delete : Xóa tài liệu
+		@RequestMapping(value = "docs/{id}/delete", method = RequestMethod.POST)
+		public ResponseEntity<String> postUrl(@PathVariable("id") int id) {
+			if(assigns.deleteDoc(id))
+				return new ResponseEntity<String>(HttpStatus.OK);
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
-
-	}
 
 }

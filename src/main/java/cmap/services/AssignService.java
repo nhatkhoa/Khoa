@@ -9,6 +9,8 @@ import cmap.model.ListUpload;
 import cmap.model.MemberVM;
 
 public interface AssignService {
+	
+	public boolean deleteDoc(int id);
 	// --- Load list upload tài liệu
 	public ListUpload getUpload(int assign_id);
 	

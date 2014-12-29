@@ -13,30 +13,29 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="concept")
-public class Concept{
-	
+@Table(name = "concept")
+public class Concept {
+
 	// ---- Set primary key, auto generate ID
 	@Id
 	@GeneratedValue
 	private int id;
 	private String name;
 	private String loc;
-	private int	pass;
-	
+	private int pass;
+
+	// --- Chứa danh sách tài liệu hướng dẫn cho node concept
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "concept", orphanRemoval = true)
+	private Set<Doc> docs = new HashSet<Doc>(0);
+
 	// --- Cmap cha, chứa concept này
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private CMap cmap;
-	
-	// --- Chứa danh sách tài liệu hướng dẫn cho node concept
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Doc> docs = new HashSet<Doc>(0);
-	
+
 	// ---- Hàm khởi tạo
-	public Concept(){
-		
+	public Concept() {
+
 	}
-	
 
 	public Concept(String name, String loc, CMap cmap) {
 		this.name = name;
@@ -45,13 +44,14 @@ public class Concept{
 		this.pass = -1;
 	}
 
-	@Override 
-	public boolean equals(Object obj){
+	@Override
+	public boolean equals(Object obj) {
 		Concept con = (Concept) obj;
 		// --- So sánh tên con concept
 		return this.getName().contains(con.getName());
 
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -92,16 +92,12 @@ public class Concept{
 		this.cmap = cmap;
 	}
 
-
 	public Set<Doc> getDocs() {
 		return docs;
 	}
-
 
 	public void setDocs(Set<Doc> docs) {
 		this.docs = docs;
 	}
 
-	
-	
 }

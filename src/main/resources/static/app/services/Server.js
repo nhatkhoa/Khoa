@@ -45,7 +45,7 @@
 	var shareHttp = function(id, list) {
 	    return $http.post("data/cmaps/" + id + "/share", list);
 	};
-	
+
 	var unshareHttp = function(id, user_id) {
 	    return $http.get("data/cmaps/" + id + "/unshare/" + user_id);
 	};
@@ -85,47 +85,63 @@
 	    list : listHttp,
 	};
     });
-    
- // ---- Assign Service
-    app.factory('assignService', function($http) {
+
+    // ---- Assign Service
+    app.factory('assignService', function($http, $upload) {
 	// --- Lấy assign theo id
 	var getHttp = function(id) {
 	    return $http.get("data/assigns/" + id);
 	};
-	
+
 	// --- Tạo assign mới
 	var createHttp = function(assign) {
 	    return $http.post("data/assigns", assign);
 	};
-	
+
 	// --- Nộp bài tập lên hệ thống
-	var submitHttp = function(id ,cmap_id) {
-	    return $http.get("data/assigns/submit/"+ id + "/" + cmap_id);
+	var submitHttp = function(id, cmap_id) {
+	    return $http.get("data/assigns/submit/" + id + "/" + cmap_id);
 	};
-	
+
 	// --- Nộp bài tập lên hệ thống
 	var getMemHttp = function(id) {
-	    return $http.get("data/assigns/"+ id + "/members");
+	    return $http.get("data/assigns/" + id + "/members");
 	};
 
 	// --- Nộp bài tập lên hệ thống
 	var postUserHttp = function(id, mem_id) {
-	    return $http.get("data/assigns/"+ id + "/" + mem_id);
+	    return $http.get("data/assigns/" + id + "/" + mem_id);
 	};
-	
+
 	// --- Lấy feedback
 	var feedHttp = function(id) {
-	    return $http.get("data/assigns/"+ id + "/feedback");
+	    return $http.get("data/assigns/" + id + "/feedback");
 	};
-	
+
 	// --- Lấy ListUpload Up tài liệu
 	var listUploadHttp = function(id) {
-	    return $http.get("data/assigns/"+ id + "/uploads");
+	    return $http.get("data/assigns/" + id + "/uploads");
 	};
-	
+
 	// --- Post url cho tài liệu
 	var postUrlHttp = function(id, url) {
-	    return $http.post("data/assigns/"+ id + "/posturl", url);
+	    return $http.post("data/assigns/" + id + "/posturl", url);
+	};
+
+	// --- Post url cho tài liệu
+	var uploadHttp = function(id, file) {
+	    var fd = new FormData();
+	    fd.append('file', file);
+	    
+	    return $http.post("docs/" + id, fd, {
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': "multipart/form-data; boundary='data'"}
+	        });
+	};
+
+	// --- Post url cho tài liệu
+	var delUrlHttp = function(id) {
+	    return $http.post("data/assigns/docs/" + id + "/delete");
 	};
 
 	return {
@@ -136,7 +152,9 @@
 	    postUser : postUserHttp,
 	    feedBack : feedHttp,
 	    listUpload : listUploadHttp,
-	    postUrl : postUrlHttp
+	    postUrl : postUrlHttp,
+	    upload : uploadHttp,
+	    delUrl : delUrlHttp
 	};
     });
 })();

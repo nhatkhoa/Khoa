@@ -1,6 +1,5 @@
 package cmap.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,7 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Document")
+@Table(name = "documents")
 public class Doc {
 	
 	@Id
@@ -18,7 +17,7 @@ public class Doc {
 	private String url;
 	
 	// --- Chứa concept tương ứng
-	@ManyToOne(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Concept concept;
 
 	public Doc() {
