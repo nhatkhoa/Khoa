@@ -53,7 +53,7 @@ public class Relation {
 		String title = rela.getTitle();
 
 		// --- Nếu tên quan hệ giống nhau thì tiếp tục so sánh 2 concept
-		if (this.title.contains(title)) {
+		if (this.title.compareTo(title) == 0) {
 			// --- Nếu cả 2 concept đều trùng thì trả về 1 (đúng hoàn toàn)
 			if (this.getFrom().equals(rela.getFrom())
 					&& this.getTo().equals(rela.getTo()))

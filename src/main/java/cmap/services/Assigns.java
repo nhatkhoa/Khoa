@@ -283,7 +283,13 @@ public class Assigns implements AssignService {
 		// --- Gán điểm cho feedback mới
 		feed.setScore(sum);
 
-
+		// --- Lấy user hiện tại
+		Member m = cmap.getAuthor();
+		// --- Xóa feedback cũ
+		for(FeedBack f : feeds.getFeedBack(assign_id, m.getUsername())){
+			feeds.deleteFeed(f.getId());
+		}
+		
 		// --- Lưu feedback mới
 		feeds.save(feed);
 

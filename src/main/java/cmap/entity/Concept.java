@@ -48,7 +48,7 @@ public class Concept {
 	public boolean equals(Object obj) {
 		Concept con = (Concept) obj;
 		// --- So sánh tên con concept
-		return this.getName().contains(con.getName());
+		return this.getName().compareToIgnoreCase(con.getName()) == 0;
 
 	}
 
