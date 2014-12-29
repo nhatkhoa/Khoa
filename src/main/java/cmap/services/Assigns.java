@@ -49,7 +49,7 @@ public class Assigns implements AssignService {
 
 	@Autowired
 	private AssignRepository assigns;
-	
+
 	@Autowired
 	private DocRepository docs;
 
@@ -206,6 +206,13 @@ public class Assigns implements AssignService {
 		if (cmap == null || assign == null)
 			return -1;
 
+		// --- Lấy user hiện tại
+		Member m = cmap.getAuthor();
+		// --- Xóa feedback cũ
+		for (FeedBack f : feeds.getFeedBack(assign_id, m.getUsername())) {
+			feeds.deleteFeed(f.getId());
+		}
+
 		// --- Tạo mới một thực thể Feedback
 		FeedBack feed = new FeedBack(-1, new Date(), assign, cmap);
 
@@ -216,6 +223,13 @@ public class Assigns implements AssignService {
 
 		// --- Lấy danh sách Realation của bài làm
 		Set<Relation> relationList = cmap.getRelations();
+		
+		// --- Trả Relation và concept pass về mặc định
+		for(Relation relation: relationList){
+			relation.setPass(-1);
+			relation.getFrom().setPass(-1);
+			relation.getTo().setPass(-1);
+		}
 
 		// --- Duyệt từng phần tử trong danh sách đáp án
 		for (Relation key : relationKey) {
@@ -223,7 +237,6 @@ public class Assigns implements AssignService {
 			for (Relation relation : relationList) {
 				log.info("-- Compare relation " + relation.getTitle() + " với "
 						+ key.getTitle());
-
 				// --- Lấy điểm trả về từ so sánh
 				int score = relation.isPass(key);
 
@@ -283,13 +296,6 @@ public class Assigns implements AssignService {
 		// --- Gán điểm cho feedback mới
 		feed.setScore(sum);
 
-		// --- Lấy user hiện tại
-		Member m = cmap.getAuthor();
-		// --- Xóa feedback cũ
-		for(FeedBack f : feeds.getFeedBack(assign_id, m.getUsername())){
-			feeds.deleteFeed(f.getId());
-		}
-		
 		// --- Lưu feedback mới
 		feeds.save(feed);
 
@@ -304,59 +310,60 @@ public class Assigns implements AssignService {
 		// --- Khởi tạo một đối tượng Doc mới
 		Doc doc = new Doc(url);
 		doc.setConcept(con);
-		
+
 		docs.save(doc);
-		
+
 		DocVM temp = new DocVM(doc.getId(), doc.getUrl());
-		// --- Trả về 
+		// --- Trả về
 		return temp;
 	}
 
 	@Override
 	public ListUpload getUpload(int assign_id) {
-		
+
 		// --- Truy vấn assign tương ứng với id
 		Assign assign = assigns.findById(assign_id);
-		
-		// --- Nếu không tồn tại 
-		if(assign == null)
+
+		// --- Nếu không tồn tại
+		if (assign == null)
 			return null;
-		
+
 		// --- Khởi tạo mới một đối tượng ListUpload
 		ListUpload listUpload = new ListUpload(assign_id, assign.getTopic());
-		
+
 		// --- Lấy danh sách các concept
 		Set<Concept> concepts = assign.getCmap().getConcepts();
-		
+
 		// --- Duyệt từng concepts : tạo mới đối tượng ConceptDoc
-		for(Concept c : concepts){
-			ConceptDoc con = new ConceptDoc(c.getId(), c.getName(), c.getDocs().size());
-			
-			// --- Duyệt từng Doc trong danh sách tài liệu của concept đang duyệt
-			for(Doc d : c.getDocs()){
+		for (Concept c : concepts) {
+			ConceptDoc con = new ConceptDoc(c.getId(), c.getName(), c.getDocs()
+					.size());
+
+			// --- Duyệt từng Doc trong danh sách tài liệu của concept đang
+			// duyệt
+			for (Doc d : c.getDocs()) {
 				// --- Tạo và thêm DocVM mới tạo con
 				con.getDocs().add(new DocVM(d.getId(), d.getUrl()));
 			}
-			
+
 			// --- Thêm con vào listUplod
 			listUpload.getConcept().add(con);
 		}
-		
+
 		return listUpload;
 	}
 
 	@Override
 	public boolean deleteDoc(int id) {
-		try{
+		try {
 			Doc doc = docs.findById(id);
 			Concept con = doc.getConcept();
-			
+
 			con.getDocs().remove(doc);
 			cons.save(con);
 
 			return true;
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
