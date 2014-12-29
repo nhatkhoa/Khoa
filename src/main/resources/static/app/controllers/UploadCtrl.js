@@ -1,3 +1,4 @@
+load = {};
 (function() {
     'use strict';
 
@@ -86,7 +87,7 @@
 	    assignService.delUrl(item.id)
 	    .success(function(){
 		// --- Thông báo
-		toaster.pop("success", "Xóa thành cồng", item.url);
+		toaster.pop("success", "Xóa thành công", item.url);
 		// --- Xóa khỏi danh sách hiện tại
 		$scope.select.docs.splice(indexUrl,1);
 		// --- Cập nhật vào data chính
@@ -100,6 +101,16 @@
 	    
 	}
 	
+	$scope.postUrl = function(){
+	    assignService.listDoc($scope.select.id)
+	    .success(function(response){
+		$scope.select.docs = response;
+		
+		$scope.file = null;
+	    })
+	}
+	
+	load = $scope.postUrl;
 	
     });
 

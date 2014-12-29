@@ -50,38 +50,6 @@ public class HomeController {
 		return "redirect:signup.html?Ten-tai-khoan-da-ton-tai";
 	}
 
-	// --- /data/assigns/1/upload : upload
-	@RequestMapping(value = "docs/{id}", method = RequestMethod.POST, headers="content-type=multipart/*")
-	public ResponseEntity<String> upload(@PathVariable("id") int concept_id,
-			@RequestParam("file") MultipartFile file) {
-		System.out.print("--- Upload file : " + file.getOriginalFilename());
-		// --- Nếu tồn tại file được chọn
-		if (!file.isEmpty()) {
-			try {
-				// --- Lấy tên file /document/31313_kacaaca.pdf
-				String vir = "documents/" + concept_id + "_"
-						+ file.getOriginalFilename();
-				String name = servle.getRealPath("/") + "/" + vir;
-				// --- Đọc file upload lên
-				byte[] bytes = file.getBytes();
-				// --- Stream buffer file
-				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(new File(name)));
-				// --- Ghi file
-				stream.write(bytes);
-				stream.close();
-
-				// --- Thêm url tại liệu mới vào concept
-				assigns.uploadDoc(concept_id, vir);
-				// --- Trả về đường dẫn file
-				return new ResponseEntity<String>(vir, HttpStatus.OK);
-			} catch (Exception e) {
-				return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
-			}
-		} else {
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
-		}
-
-	}
+	
 
 }

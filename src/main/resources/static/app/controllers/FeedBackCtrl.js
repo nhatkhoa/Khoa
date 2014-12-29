@@ -3,7 +3,7 @@
 
     var app = angular.module("ConceptMap");
 
-    app.controller('FeedBackCtrl', function($scope, $modalInstance, $http, toaster, assignService, id) {
+    app.controller('FeedBackCtrl', function($scope, $modalInstance, $http, toaster, assignService, id, $location) {
 
         //------------------- Thông tin về bản vẽ------------------------------/
         //-- Dữ liệu bản vẽ
@@ -28,6 +28,7 @@
             $modalInstance.dismiss('cancel');
         };
 
+      
 
     });
 

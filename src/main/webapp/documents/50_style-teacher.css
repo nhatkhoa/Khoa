@@ -1,0 +1,165 @@
+body {
+	background-color: #ffffff;
+}
+
+html {
+		background: #fff;
+		width: 100%;
+		height: 100%;
+
+}
+
+#navigation {
+	top: 0;
+	background: #101010;
+	width: 1368px;	
+	height: 65px;
+	position: fixed;
+	z-index: 5;
+	box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.5);
+	margin: 0px 0px 0px -8px;
+}
+
+#nav {
+	list-style: none;
+	height: 100%;
+	width: 1366px;
+}
+
+#nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: auto;
+	display: none;
+	
+}
+
+#nav li {
+	font-family: Satellite;
+	font-size: 25px;
+	text-align: center;
+	float: right;
+	position: relative;
+	width: 115px;
+	height: 35px;
+	top: 22px;
+	right: 2px;
+}
+
+#nav a:link, #nav a:active, #nav a:visited
+{
+	display: block;
+	color: #fff;
+	text-decoration:none;
+}
+
+#nav a:hover
+{
+	color: #d2ddd7;
+}
+
+
+#container {
+	background: #fff;
+}
+
+.logo {
+	top: 0;
+	margin: 10px 0px 5px 20px;
+	height: 44px;
+	width: 44px;
+	position: absolute;
+	z-index: 25;
+}
+
+#banner {
+	background: #748ba7;
+	width: 1360px;
+	height: 65px;
+	position: relative;
+	top: 0;
+	margin: -25px 0 0 0px;
+}
+
+#side-navigation {
+	width: 250px;
+	height: 525px;
+	background: #fff;
+	border: solid 2px #dedede;
+	position: relative;
+	top: 5px;
+	margin-left: 5px;
+}
+
+.content {
+	color: #000;
+	width: 1100px;
+	height: 525px;
+	background: #fff;
+	border: solid 2px #dedede;
+	position: absolute;
+	top: 135px;
+	margin-left: 260px;
+
+}
+
+.profile-pic {
+	border: solid 2px #dedede;
+	height: 225px;
+	width: 225px;
+	position: absolute;
+	top: 5px;
+	margin-left: 10px; 
+}
+
+.button {
+	padding: 3px 2px;
+	text-align: center;
+	-moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+	box-shadow:inset 0px 0px 0px 0px #ffffff;
+	background-color:#ffffff;
+	border:2px solid #b5b5b5;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family: Satellite;
+	font-size:20px;
+	font-weight:bold;
+	width: 215px;
+	height: 31px;
+	text-decoration:none;
+	text-shadow:0px 0px 0px #ffffff;
+	position: relative;
+	top: 250px;
+	margin: 5px 0px 5px 16px;
+}
+.button:hover {
+	background-color:#dedede;
+}
+.button:active {
+	position: relative;
+}
+
+.username {
+	padding: 20px 2px;
+	text-align: center;
+	-moz-box-shadow:inset 0px 0px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 0px 0px 0px #ffffff;
+	box-shadow:inset 0px 0px 0px 0px #ffffff;
+	background-color:#ffffff;
+	border:2px solid #b5b5b5;
+	display:inline-block;
+	color:#666666;
+	font-family: Satellite;
+	font-size:20px;
+	font-weight:bold;
+	width: 215px;
+	height: 61px;
+	text-decoration:none;
+	text-shadow:0px 0px 0px #ffffff;
+	position: relative;
+	top: 250px;
+	margin: 5px 0px 5px 16px;
+}

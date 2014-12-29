@@ -122,6 +122,11 @@
 	var listUploadHttp = function(id) {
 	    return $http.get("data/assigns/" + id + "/uploads");
 	};
+	
+	// --- Lấy Danh sách tài liệu theo concept id 
+	var listDocHttp = function(id) {
+	    return $http.get("data/assigns/docs/" + id);
+	};
 
 	// --- Post url cho tài liệu
 	var postUrlHttp = function(id, url) {
@@ -150,7 +155,8 @@
 	    listUpload : listUploadHttp,
 	    postUrl : postUrlHttp,
 	    upload : uploadHttp,
-	    delUrl : delUrlHttp
+	    delUrl : delUrlHttp,
+	    listDoc : listDocHttp
 	};
     });
 })();

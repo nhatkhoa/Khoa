@@ -369,4 +369,22 @@ public class Assigns implements AssignService {
 		}
 	}
 
+	@Override
+	public Set<DocVM> getDocs(int id) {
+		// --- Truy vấn concept tương ứng
+		Concept con = cons.findById(id);
+		
+		// --- Khởi tạo một list DocVm
+		Set<DocVM> ds = new HashSet<DocVM>(0);
+		
+		// --- Duyệt tất cả doc và chuyển thành DocVM
+		for(Doc d : con.getDocs()){
+			DocVM doc = new DocVM(d.getId(), d.getUrl());
+			// --- Thêm vào list
+			ds.add(doc);
+		}
+		
+		return ds;
+	}
+
 }

@@ -7,11 +7,8 @@
 	<div class="row">
 		<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
 			<div class="list-group">
-				<a class="list-group-item">
-					<strong>DANH SÁCH KHÁI NIỆM</strong>
-				</a>
-				
-				<a ng-click="open(item)" ng-repeat="item in data.concept"
+				<a class="list-group-item"> <strong>DANH SÁCH KHÁI NIỆM</strong>
+				</a> <a ng-click="open(item)" ng-repeat="item in data.concept"
 					ng-class="{active : item.id===select.id}" class="list-group-item">
 					{{item.name}}<span class="fa fa-angle-right arrow"></span> <span
 					class="badge badge-green">{{item.docs.length}}</span>
@@ -30,17 +27,21 @@
 						<input type="text" ng-model="link" class="form-control"
 							placeholder="http://..."> <span class="input-group-btn">
 							<a ng-click="add()" class="btn btn-green">Thêm</a>
-							
+
 						</span>
 					</div>
 					</br>
-					<form id="upload" action="docs/48" method="post" target="hidden_upload"
-						enctype="multipart/form-data" class="input-group">
+					<form id="upload" action="data/assigns/docs" method="post"
+						target="hidden_upload" enctype="multipart/form-data"
+						class="input-group">
+						<input type="hidden" name="id" value="{{select.id}}" ng-model="select.id">
 						<input name="file" type="file" ng-model="file"
 							class="form-control"> <span class="input-group-btn">
-							<button type="submit" ng-click class="btn btn-red">Tải lên</button>
+							<button type="submit" ng-click="postUrl()" class="btn btn-red">Tải
+								lên</button>
 						</span>
-						<iframe id="hidden_upload" name=hidden_upload src='' style='width:0;height:0;border:0px solid #fff'></iframe>
+						<iframe id="hidden_upload" name="hidden_upload" onload="load();"
+							src='' style='width: 0; height: 0; border: 0px solid #fff'></iframe>
 					</form>
 				</div>
 			</div>
@@ -51,8 +52,9 @@
 					<ul class="list-group list-group-sortable sortable ui-sortable">
 						<li ng-repeat="item in select.docs"
 							class="list-group-item helper-green ui-sortable-handle"><span
-							class="fa fa-unsorted icon-globe"></span> <strong>Link {{$index +1}}: </strong> {{item.url | limitTo:60}} <a
-							ng-click="del(item)" class="pull-right text-green icon-action"><span
+							class="fa fa-unsorted icon-globe"></span> <strong>Link
+								{{$index +1}}: </strong> {{item.url | limitTo:60}} <a
+							ng-click="del(item)" style="cursor : pointer" class="pull-right text-green icon-action"><span
 								class="icon-trash"></span></a></li>
 
 					</ul>
