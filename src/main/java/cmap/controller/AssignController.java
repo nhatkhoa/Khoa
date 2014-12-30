@@ -53,7 +53,7 @@ public class AssignController {
 	// --- /data/assigns : Action Tạo bài tập mới
 	@RequestMapping(method = RequestMethod.POST)
 	public AssignVM create(@RequestBody AssignPost assign) {
-		System.out.print(assign.getDeadline());
+
 		return assigns.add(assign);
 	}
 

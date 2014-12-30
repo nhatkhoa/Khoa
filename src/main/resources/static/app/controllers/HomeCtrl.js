@@ -68,14 +68,12 @@
             });
             // ---- Kết quả trả về từ bản vẽ
             modalInstance.result.then(function(assign) {
+        	$scope.$state.go("cmap");
                 // --- Thêm concept map mới vào list
                 $scope.$account.assigns.push(assign);
                 // ---- cập nhật lại danh sách concept map
                 $localStorage.data.assigns = $scope.$account.assigns;
-                
-                // --- Định hướng sang assign (trang bài tập)
-                $scope.$state.go("assign");
-                
+                    
                 // --- Thông báo cập nhật data cho assign controller
                 $rootScope.$broadcast('data', $scope.$account);
 

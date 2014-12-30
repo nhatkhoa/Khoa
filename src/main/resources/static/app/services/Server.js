@@ -103,12 +103,11 @@
 	    return $http.get("data/assigns/submit/" + id + "/" + cmap_id);
 	};
 
-	// --- Nộp bài tập lên hệ thống
+
 	var getMemHttp = function(id) {
 	    return $http.get("data/assigns/" + id + "/members");
 	};
 
-	// --- Nộp bài tập lên hệ thống
 	var postUserHttp = function(id, mem_id) {
 	    return $http.get("data/assigns/" + id + "/" + mem_id);
 	};
