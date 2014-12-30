@@ -20,7 +20,7 @@ public class AssignVM implements Serializable{
 	private int users;
 	
 	
-	private SimpleDateFormat date = new SimpleDateFormat("dd/M/yyyy");
+	private SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
 	public AssignVM(int id, String topic, Date deadline, String info,
 			int teacher_id, String teacher_name, int score, Date date_submit,
 			int submited, int total, int users) {
